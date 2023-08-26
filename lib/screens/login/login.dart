@@ -69,7 +69,7 @@ class LoginScreen extends StatelessWidget {
                   width: LoginStyles.logoWidth,
                   height: LoginStyles.logoHeight,
                   margin: LoginStyles.logoMargin,
-                  child: Image.asset('assets/logo/HydroSense_logo_nobg.png'),
+                  child: Image.asset('assets/logo/hydrosense_icon.png'),
                 ),
                 //* Login Text
                 Container(
@@ -90,7 +90,7 @@ class LoginScreen extends StatelessWidget {
                       debugPrint(text);
                       emailaddress = text;
                     },
-                    obscureTextEnabled: false,
+                    obscureTextEnabled: true,
                     validator: emailValidator,
                   ),
                 ),
