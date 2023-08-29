@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class DesignConstants {
   //* Application Level
   static const debugBanner = false;
@@ -10,4 +12,8 @@ class DesignConstants {
   static const int COLOR_DARKGRAY_SECONDARY =
       0xFF393939; //* Darkgray background color
   static const int COLOR_LIGHTBLUE_ACCENT = 0xFF9BD4FF; //* Button
+
+  static const MaterialColor COLOR_THEMEPINK = Colors.pink; //* Button
+
+
 }

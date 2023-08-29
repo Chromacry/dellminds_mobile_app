@@ -24,4 +24,6 @@ class LoginStyles {
   );
   static const Color iconColor = Colors.black;
   static const int buttonColor = DesignConstants.COLOR_LIGHTBLUE_ACCENT;
+
+
 }

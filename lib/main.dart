@@ -2,6 +2,7 @@ import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/providers/example_provider.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
 import 'package:dellminds_mobile_app/screens/login/login.dart';
+import 'package:dellminds_mobile_app/screens/onboarding/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,9 +26,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: DesignConstants.debugBanner,
           title: 'Dell Minds App',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: DesignConstants.COLOR_THEMEPINK,
           ),
-          home: LoginScreen(),
+          home: WelcomePage(),
           routes: {
             LoginScreen.routeName: (_) {
               return LoginScreen();
