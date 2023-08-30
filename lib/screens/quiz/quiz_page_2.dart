@@ -1,9 +1,42 @@
-import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_4.dart';
+
+import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
+import 'package:dellminds_mobile_app/screens/quiz/quiz_page_3.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
 
-class OnboardingPage3 extends StatelessWidget {
+class QuizPage2 extends StatefulWidget {
+  @override
+  State<QuizPage2> createState() => _QuizPage2State();
+}
+
+class _QuizPage2State extends State<QuizPage2> {
+  final QuizProvider quizProvider = QuizProvider();
+
+  late QuizQuestion currentQuestion;
+
+  @override
+  void initState() {
+    super.initState();
+    currentQuestion = quizProvider.unusedQuestions.first;
+  }
+
+  void handleAnswer(String chosenOption) {
+    // Process the answer and get the next question
+    quizProvider
+        .updateScore(quizProvider.getCategoryFromChosenOption(chosenOption));
+    debugPrint('Printing Score:');
+    quizProvider.activityScores.forEach((key, value) {
+      debugPrint('$key: $value');
+    });
+    quizProvider.unusedQuestions.removeAt(0); // Remove the current question
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QuizPage3()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,18 +47,14 @@ class OnboardingPage3 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Quiz Example',
+                'Question 2',
                 style: OnboardingStyles.headerText,
               ),
               SizedBox(height: 40),
-
-              //* Quiz example option 1 
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => OnboardingPage4()),
-                  );
+                  // Handle button press for Option 1
+                  handleAnswer(currentQuestion.option1);
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
@@ -39,33 +68,32 @@ class OnboardingPage3 extends StatelessWidget {
                     OnboardingStyles.quizButtonHeight,
                   ),
                 ).copyWith(
-                  backgroundColor: ButtonStyles.sportsStyle
-                      .backgroundColor, // Maintain the primary color
+                  backgroundColor: ButtonStyles.getStyleFromCategory(
+                    quizProvider
+                        .getCategoryFromChosenOption(currentQuestion.option1),
+                  ),
                 ),
                 child: Column(
                   children: [
                     Icon(
-                      Icons.sports_soccer,
-                      size: 50, 
+                      quizProvider
+                          .getIconFromChosenOption(currentQuestion.option1),
+                      size: 50, // Adjust the icon size
                       color: OnboardingStyles.nextButtonArrowColor,
                     ),
-                    SizedBox(height: 10), 
+                    SizedBox(height: 10),
                     Text(
-                      'Football',
+                      currentQuestion.option1, // Display option 1
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 20),
-
-              //* Quiz example option 1           
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => OnboardingPage4()),
-                  );
+                  // Handle button press for Option 2
+                  handleAnswer(currentQuestion.option2);
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
@@ -79,19 +107,22 @@ class OnboardingPage3 extends StatelessWidget {
                     OnboardingStyles.quizButtonHeight,
                   ),
                 ).copyWith(
-                  backgroundColor: ButtonStyles
-                      .artsStyle.backgroundColor, // Maintain the primary color
+                  backgroundColor: ButtonStyles.getStyleFromCategory(
+                    quizProvider
+                        .getCategoryFromChosenOption(currentQuestion.option2),
+                  ),
                 ),
                 child: Column(
                   children: [
                     Icon(
-                      Icons.brush,
+                      quizProvider
+                          .getIconFromChosenOption(currentQuestion.option2),
                       size: 50, // Adjust the icon size
                       color: OnboardingStyles.nextButtonArrowColor,
                     ),
-                    SizedBox(height: 10), // Add some vertical spacing
+                    SizedBox(height: 10),
                     Text(
-                      'Painting',
+                      currentQuestion.option2, // Display option 2
                       style: TextStyle(fontSize: 20),
                     ),
                   ],

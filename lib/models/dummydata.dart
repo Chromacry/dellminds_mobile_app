@@ -51,7 +51,7 @@ List<Activity> dummyActivities = [
   ),
   Activity(
     id: '7',
-    name: 'Music Jamming',
+    name: 'Music',
     description: 'Jam with fellow musicians and create music together.',
     category: 'Arts',
   ),

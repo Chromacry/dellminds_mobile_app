@@ -1,10 +1,10 @@
+import 'package:dellminds_mobile_app/screens/quiz/quiz_page_1.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
-import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_2.dart';
+import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_3.dart';
 
-
-class OnboardingPage1 extends StatelessWidget {
+class OnboardingPage4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,19 +12,11 @@ class OnboardingPage1 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Header and subheader
             Text(
-              'What else does BookBud do?',
+              'Good Pick! Ready to begin?',
               style: OnboardingStyles.headerText,
             ),
-            SizedBox(height: 20),
-            Text(
-              'BookBud allows you to find your friends and join events with them!',
-              style: OnboardingStyles.subheaderText,
-            ),
             SizedBox(height: 40),
-            
-            // Next button
             Container(
               width: OnboardingStyles.nextButtonWidth,
               height: OnboardingStyles.nextButtonHeight,
@@ -32,7 +24,7 @@ class OnboardingPage1 extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => OnboardingPage2()),
+                    MaterialPageRoute(builder: (context) => QuizPage1()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -52,7 +44,7 @@ class OnboardingPage1 extends StatelessWidget {
                       size: OnboardingStyles.nextButtonArrowSize,
                     ),
                     Text(
-                      'Next',
+                      'Start Quiz',
                       style: TextStyle(
                         color: OnboardingStyles.nextButtonTextColor,
                         fontSize: 18,

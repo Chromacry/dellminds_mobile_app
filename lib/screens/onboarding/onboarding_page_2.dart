@@ -3,7 +3,6 @@ import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_3.dart';
 
-
 class OnboardingPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,6 +11,8 @@ class OnboardingPage2 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Header and subheader
+
             Text(
               'How does it work?',
               style: OnboardingStyles.headerText,
@@ -22,6 +23,7 @@ class OnboardingPage2 extends StatelessWidget {
               style: OnboardingStyles.subheaderText,
             ),
             SizedBox(height: 40),
+            // Next button
             Container(
               width: OnboardingStyles.nextButtonWidth,
               height: OnboardingStyles.nextButtonHeight,

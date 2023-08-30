@@ -72,6 +72,19 @@ class ButtonStyles {
   static final cookingStyle = commonStyle.copyWith(
     backgroundColor: MaterialStateProperty.all(Colors.green),
   );
+
+  static MaterialStateProperty<Color?> getStyleFromCategory(String category) {
+    switch (category) {
+      case 'Sports':
+        return MaterialStateProperty.all(Colors.blue);
+      case 'Arts':
+        return MaterialStateProperty.all(Colors.orange);
+      case 'Cooking':
+        return MaterialStateProperty.all(Colors.green);
+      default:
+        return MaterialStateProperty.all(Colors.grey); // Default style
+    }
+  }
 }
 
 
