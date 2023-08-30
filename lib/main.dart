@@ -1,5 +1,6 @@
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/providers/example_provider.dart';
+import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
 import 'package:dellminds_mobile_app/screens/login/login.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/welcome.dart';
@@ -18,8 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ExampleProvider>(
-          create: (context) => ExampleProvider(),
+        ChangeNotifierProvider<QuizProvider>(
+          create: (context) => QuizProvider(),
         ),
       ],
       child: MaterialApp(

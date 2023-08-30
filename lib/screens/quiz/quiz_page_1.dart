@@ -1,9 +1,9 @@
-
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
 import 'package:dellminds_mobile_app/screens/quiz/quiz_page_2.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
+import 'package:provider/provider.dart';
 
 class QuizPage1 extends StatefulWidget {
   @override
@@ -12,11 +12,14 @@ class QuizPage1 extends StatefulWidget {
 
 class _QuizPage1State extends State<QuizPage1> {
   late QuizQuestion currentQuestion;
-  final QuizProvider quizProvider = QuizProvider();
+  late QuizProvider quizProvider;
 
   @override
   void initState() {
     super.initState();
+    quizProvider = Provider.of<QuizProvider>(context,
+        listen: false); // Initialize quizProvider
+
     currentQuestion = quizProvider.unusedQuestions.first;
   }
 
