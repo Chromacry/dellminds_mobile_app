@@ -1,4 +1,5 @@
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
+import 'package:dellminds_mobile_app/screens/quiz/quiz_success.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
@@ -34,7 +35,7 @@ class _QuizPage3State extends State<QuizPage3> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => QuizPage3()),
+      MaterialPageRoute(builder: (context) => QuizSuccessPage()),
     );
   }
 

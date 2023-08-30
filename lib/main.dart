@@ -7,13 +7,20 @@ import 'package:dellminds_mobile_app/screens/onboarding/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'widgets/navigation_bar.dart';
+
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: DesignConstants.debugBanner,
-          title: 'Dell Minds App',
+          title: 'BookBud',
           theme: ThemeData(
             primarySwatch: DesignConstants.COLOR_THEMEPINK,
           ),
@@ -38,6 +45,27 @@ class MyApp extends StatelessWidget {
               return HomeScreen();
             },
           }),
+    );
+  }
+}
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  final int currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('This is an empty page.'),
+      ),
+      bottomNavigationBar: Navigation_Bar(currentIndex: currentIndex),
     );
   }
 }
