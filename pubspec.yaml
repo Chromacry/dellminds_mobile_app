@@ -78,6 +78,10 @@ flutter:
     - assets/logo/hydrosense_icon.png
     - assets/images/google-icon.png
     - assets/images/facebook-icon.png
+    - assets/images/event_images/football.png
+    - assets/images/event_images/naturewalk.jpg
+    - assets/images/event_images/painting.jpg
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
