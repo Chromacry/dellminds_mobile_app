@@ -1,9 +1,11 @@
 import 'package:dellminds_mobile_app/main.dart';
+import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class QuizSuccessPage extends StatefulWidget {
   @override
@@ -12,31 +14,31 @@ class QuizSuccessPage extends StatefulWidget {
 
 class _QuizSuccessPageState extends State<QuizSuccessPage> {
   late QuizProvider quizProvider;
+  late UserDummyProvider userDummyProvider;
 
   @override
   void initState() {
     super.initState();
     quizProvider = Provider.of<QuizProvider>(context,
         listen: false); // Initialize quizProvider
-  }
+    userDummyProvider = Provider.of<UserDummyProvider>(context, listen: false);
 
-  String getCategoryWithHighestScore() {
-    String maxCategory = '';
-    int maxScore = -1;
+    final randomUserId = generateRandomUserId();
+    final recommendedCategory = quizProvider.getCategoryWithHighestScore();
 
-    quizProvider.activityScores.forEach((category, score) {
-      if (score > maxScore) {
-        maxScore = score;
-        maxCategory = category;
-      }
+    userDummyProvider.setUserInfo(randomUserId, recommendedCategory);
+
+    Future.delayed(Duration.zero, () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+      );
     });
-
-    return maxCategory;
   }
 
   @override
   Widget build(BuildContext context) {
-    String highestCategory = getCategoryWithHighestScore();
+    String highestCategory = quizProvider.getCategoryWithHighestScore();
     String message =
         'Good Job! It seems you are more interested in $highestCategory!';
 
@@ -98,4 +100,9 @@ class _QuizSuccessPageState extends State<QuizSuccessPage> {
       ),
     );
   }
+}
+
+String generateRandomUserId() {
+  final uuid = Uuid();
+  return uuid.v4();
 }

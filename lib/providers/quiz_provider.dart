@@ -35,6 +35,20 @@ class QuizProvider extends ChangeNotifier {
   }
 }
 
+String getCategoryWithHighestScore() {
+    String maxCategory = '';
+    int maxScore = -1;
+
+    activityScores.forEach((category, score) {
+      if (score > maxScore) {
+        maxScore = score;
+        maxCategory = category;
+      }
+    });
+
+    return maxCategory;
+  }
+
 IconData getIconFromChosenOption(String chosenOption) {
   switch (chosenOption) {
     case 'Football':
