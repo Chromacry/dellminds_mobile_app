@@ -1,5 +1,7 @@
 import 'package:dellminds_mobile_app/main.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
+import 'package:dellminds_mobile_app/screens/home/home.dart';
+import 'package:dellminds_mobile_app/screens/home/home_map.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
@@ -27,13 +29,6 @@ class _QuizSuccessPageState extends State<QuizSuccessPage> {
     final recommendedCategory = quizProvider.getCategoryWithHighestScore();
 
     userDummyProvider.setUserInfo(randomUserId, recommendedCategory);
-
-    Future.delayed(Duration.zero, () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MainScreen()),
-      );
-    });
   }
 
   @override
@@ -63,10 +58,8 @@ class _QuizSuccessPageState extends State<QuizSuccessPage> {
               height: OnboardingStyles.nextButtonHeight,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MainScreen()),
-                  );
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      HomeMapScreen.routeName, (_) => false);
                 },
                 style: ElevatedButton.styleFrom(
                   primary: OnboardingStyles.nextButtonColor,

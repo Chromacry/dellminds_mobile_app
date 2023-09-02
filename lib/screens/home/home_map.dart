@@ -2,34 +2,41 @@ import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/constants/global_constants.dart';
 import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
-import 'package:dellminds_mobile_app/screens/home/home_map.dart';
+import 'package:dellminds_mobile_app/screens/home/home.dart';
 import 'package:dellminds_mobile_app/screens/login/login.dart';
 import 'package:dellminds_mobile_app/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeMapScreen extends StatefulWidget {
+  const HomeMapScreen({super.key});
 
-  static const String routeName = '/home';
+  static const String routeName = '/homee';
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomeMapScreenState createState() => _HomeMapScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeMapScreenState extends State<HomeMapScreen> {
   final int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
 
+    // Get the screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate the left position to center the avatar
+    double avatarWidth = 170; // Adjust the width of the avatar as needed
+    double left = (screenWidth - avatarWidth) / 2;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          'Simple View Events',
+          'Events',
           style: TextStyle(
             color: Colors.black,
             fontSize: 24,
@@ -37,70 +44,119 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ListView.separated(
-          shrinkWrap: true,
-          itemCount: eventProvider.events.length,
-          separatorBuilder: (context, index) {
-            return SizedBox(height: 16);
-          },
-          itemBuilder: (context, index) {
-            final event = eventProvider.events[index];
-            return EventCard(event);
-          },
-        ),
-      ),
-      bottomNavigationBar: Navigation_Bar(currentIndex: currentIndex),
-      extendBody: true, // Allows the FAB to be above the navigation bar
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Align(
-        alignment: Alignment.bottomLeft,
-        child: Padding(
-          padding: EdgeInsets.zero,
-          child: SizedBox(
-            width: 150,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  HomeMapScreen.routeName,
-                  (_) => false,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+      body: Stack(
+        children: [
+          //! Real Map API should go here
+          ClipRRect(
+            child: Image.asset(
+              'assets/images/homemap.jpg', // Replace with your map image
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Event cards positioned on the map
+          Positioned(
+            left: 50, // Adjust the X position as needed
+            top: 100, // Adjust the Y position as needed
+            child: MapEventCard(
+                eventProvider.events[0]), // Replace with your event data
+          ),
+          Positioned(
+            left: 210, // Adjust the X position as needed
+            top: 250, // Adjust the Y position as needed
+            child: MapEventCard(
+                eventProvider.events[1]), // Replace with your event data
+          ),
+          // Add more Positioned widgets for additional event cards
+          Positioned(
+            left: left, // Center the avatar horizontally
+            top: 370, // Adjust the Y position as needed
+            child: Column(
+              children: [
+                Container(
+                  width: avatarWidth,
+                  height: avatarWidth,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.transparent,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.05),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Image.asset(
+                    'assets/images/youravatar.png', // Replace with your avatar image path
+                    width: avatarWidth,
+                    height: avatarWidth,
+                  ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Map View',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                SizedBox(height: 8),
+                Text(
+                  'YOU',
+                  style: TextStyle(
+                    color: Colors.pink,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Add a blue button above the navigation bar
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: 150,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        HomeScreen.routeName, (_) => false);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  Icon(
-                    Icons.event,
-                    color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Simple View',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Icon(
+                        Icons.event,
+                        color: Colors.white,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      bottomNavigationBar: Navigation_Bar(currentIndex: currentIndex),
     );
   }
 }
 
-class EventCard extends StatelessWidget {
+class MapEventCard extends StatelessWidget {
   final Event event;
 
-  EventCard(this.event);
+  MapEventCard(this.event);
 
   @override
   Widget build(BuildContext context) {
@@ -121,8 +177,8 @@ class EventCard extends StatelessWidget {
         elevation: 4,
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(8),
+          width: 150, // Adjust the width as needed
+          padding: EdgeInsets.all(4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -132,12 +188,12 @@ class EventCard extends StatelessWidget {
                   event.thumbnail,
                   fit: BoxFit.cover,
                   width: double.infinity,
-                  height: 200,
+                  height: 100,
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 4),
               Container(
-                padding: EdgeInsets.all(8),
+                padding: EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -147,16 +203,17 @@ class EventCard extends StatelessWidget {
                     Text(
                       event.title,
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 2),
                     Text(
-                      '${DateFormat('EEEE, MMMM d, y').format(event.date)}', // Format the date
-                      style: TextStyle(fontSize: 16),
+                      DateFormat('EEEE, MMMM d').format(event.date),
+                      style: TextStyle(fontSize: 12),
                     ),
+                    SizedBox(height: 2),
                     Text(
                       'Location: ${event.location}',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
@@ -280,3 +337,4 @@ class EventModal extends StatelessWidget {
     );
   }
 }
+

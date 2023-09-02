@@ -33,7 +33,7 @@ class _QuizPage1State extends State<QuizPage1> {
     });
     quizProvider.unusedQuestions.removeAt(0); // Remove the current question
 
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => QuizPage2()),
     );
