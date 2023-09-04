@@ -3,10 +3,11 @@ import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/example_provider.dart';
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
 import 'package:dellminds_mobile_app/screens/event/event_all.dart';
+import 'package:dellminds_mobile_app/screens/home/home_simple.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
-import 'package:dellminds_mobile_app/screens/home/home_map.dart';
 import 'package:dellminds_mobile_app/screens/login/login.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/welcome.dart';
+import 'package:dellminds_mobile_app/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -69,14 +70,17 @@ class _MyAppState extends State<MyApp> {
             LoginScreen.routeName: (_) {
               return LoginScreen();
             },
+            HomeSimpleScreen.routeName: (_) {
+              return HomeSimpleScreen();
+            },
             HomeScreen.routeName: (_) {
               return HomeScreen();
             },
-            HomeMapScreen.routeName: (_) {
-              return HomeMapScreen();
-            },
             EventsAllScreen.routeName: (_) {
               return EventsAllScreen();
+            },
+            ProfileScreen.routeName: (_) {
+              return ProfileScreen();
             },
           }),
     );

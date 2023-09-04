@@ -1,6 +1,6 @@
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/constants/global_constants.dart';
-import 'package:dellminds_mobile_app/screens/home/home.dart';
+import 'package:dellminds_mobile_app/screens/home/home_simple.dart';
 import 'package:dellminds_mobile_app/screens/login/login_style.dart';
 import 'package:dellminds_mobile_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                     .toString()));
         //* Login code here
         //* Redirect to home page
-        Navigator.of(context).pushNamed(HomeScreen.routeName);
+        Navigator.of(context).pushNamed(HomeSimpleScreen.routeName);
       }
     }
 

@@ -2,118 +2,82 @@ import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/constants/global_constants.dart';
 import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
+import 'package:dellminds_mobile_app/screens/event/event_all.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
 import 'package:dellminds_mobile_app/screens/login/login.dart';
-import 'package:dellminds_mobile_app/widgets/category_filter.dart';
 import 'package:dellminds_mobile_app/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class EventsAllScreen extends StatefulWidget {
-  const EventsAllScreen({super.key});
+class HomeSimpleScreen extends StatefulWidget {
+  const HomeSimpleScreen({super.key});
 
-  static const String routeName = '/events-all';
+  static const String routeName = '/home-simple';
 
   @override
-  _EventsAllScreenState createState() => _EventsAllScreenState();
+  _HomeSimpleScreenState createState() => _HomeSimpleScreenState();
 }
 
-class _EventsAllScreenState extends State<EventsAllScreen> {
-  String searchText = ''; // Store user's input text for filtering
-  String selectedCategory = 'All'; // Initialize with 'All'
+class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
 
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
 
-    // Filter the event list based on the user's input text
-    final filteredEvents = eventProvider.events.where((event) {
-      final eventCategory = event.category;
-      final eventTitle = event.title.toLowerCase();
-      final searchQuery = searchText.toLowerCase();
-
-      return (selectedCategory == 'All' || eventCategory == selectedCategory) &&
-          (eventTitle.contains(searchQuery));
-    }).toList();
-
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(55.0), // Adjust the height as needed
+        child: AppBar(
+            automaticallyImplyLeading: false, 
+          backgroundColor: DesignConstants.COLOR_THEMEPINK,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20), // Adjust the radius as needed
+            ),
           ),
-        ),
-         title: Row(
+          title: Row(
             children: [
               Text(
-                'Events (All)',
+                'Events',
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(width: 5), // Add some spacing between the title and the icon
               Icon(
-                Icons.event, // Use the map icon here
+                Icons.list, // Use the map icon here
                 color: Colors.white, // You can adjust the icon color
               ),
             ],
           ),
-        automaticallyImplyLeading: false,
-        iconTheme: IconThemeData(color: Colors.black),
+          
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Color.fromARGB(255, 253, 200, 218),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search...',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.search),
-                      ),
-                      onChanged: (text) {
-                        setState(() {
-                          searchText = text;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal:10),
-                    child: CategoryFilterWidget(
-                      onCategorySelected: (category) {
-                        setState(() {
-                          selectedCategory = category;
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                ],
+            // Add the header here
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+              child: Text(
+                'Recommended Events',
+                style: TextStyle(
+                  fontSize: 18, // Adjust the font size as needed
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Expanded(
               child: ListView.separated(
                 shrinkWrap: true,
-                itemCount: filteredEvents.length,
+                itemCount: eventProvider.events.length,
                 separatorBuilder: (context, index) {
                   return SizedBox(height: 16);
                 },
                 itemBuilder: (context, index) {
-                  final event = filteredEvents[index];
+                  final event = eventProvider.events[index];
                   return EventCard(event);
                 },
               ),
@@ -123,6 +87,7 @@ class _EventsAllScreenState extends State<EventsAllScreen> {
       ),
       extendBody: true, // Allows the FAB to be above the navigation bar
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+
       floatingActionButton: Align(
         alignment: Alignment.bottomLeft,
         child: Padding(
@@ -132,13 +97,15 @@ class _EventsAllScreenState extends State<EventsAllScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                width: 160,
+                width: 150,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed(
+                      EventsAllScreen.routeName,
+                    );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: DesignConstants.COLOR_THEMEPINK,
+                    primary: Colors.grey, // Adjust the color as needed
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -147,14 +114,47 @@ class _EventsAllScreenState extends State<EventsAllScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Recommended',
+                        'All Events',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Icon(
-                        Icons.star,
+                        Icons.event,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 150,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      HomeScreen.routeName,
+                      
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Map View',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Icon(
+                        Icons.map,
                         color: Colors.white,
                       ),
                     ],
@@ -225,7 +225,7 @@ class EventCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      '${DateFormat('EEEE, MMMM d, y').format(event.date)}',
+                      '${DateFormat('EEEE, MMMM d, y').format(event.date)}', // Format the date
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(

@@ -3,12 +3,11 @@ import 'package:dellminds_mobile_app/constants/global_constants.dart';
 import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'package:dellminds_mobile_app/screens/event/event_all.dart';
-import 'package:dellminds_mobile_app/screens/home/home_map.dart';
-import 'package:dellminds_mobile_app/screens/login/login.dart';
+import 'package:dellminds_mobile_app/screens/home/home_simple.dart';
 import 'package:dellminds_mobile_app/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,62 +23,131 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
+    // Get the screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate the left position to center the avatar
+    double avatarWidth = 170; // Adjust the width of the avatar as needed
+    double left = (screenWidth - avatarWidth) / 2;
 
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55.0), // Adjust the height as needed
         child: AppBar(
-            automaticallyImplyLeading: false, 
+          automaticallyImplyLeading: false,
           backgroundColor: DesignConstants.COLOR_THEMEPINK,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(20), // Adjust the radius as needed
             ),
           ),
-          title: Text(
-            'Events (Simple View)',
-            style: TextStyle(fontSize: 20),
+          title: Row(
+            children: [
+              Text(
+                'Events',
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(width: 5), // Add some spacing between the title and the icon
+              Icon(
+                Icons.map, // Use the map icon here
+                color: Colors.white, // You can adjust the icon color
+              ),
+            ],
           ),
           iconTheme: IconThemeData(color: Colors.black),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Add the header here
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-              child: Text(
-                'Recommended Events',
-                style: TextStyle(
-                  fontSize: 18, // Adjust the font size as needed
-                  fontWeight: FontWeight.bold,
+      body: FutureBuilder<List<Event>>(
+        future: _initializeProviders(context), // Fetch recommended events
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // While the data is loading, you can display a loading indicator
+            return Center(
+                child:
+                    CircularProgressIndicator()); // Replace with your loading widget
+          } else if (snapshot.hasError) {
+            // If an error occurred, handle it here
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            // Once the data is loaded, you can access it as snapshot.data
+            final recommendedEvents =
+                snapshot.data ?? []; // Default to an empty list if data is null
+
+            return Stack(
+              children: [
+                //! Real Map API should go here
+                ClipRRect(
+                  child: Image.asset(
+                    'assets/images/homemap.jpg', // Replace with your map image
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: ListView.separated(
-                shrinkWrap: true,
-                itemCount: eventProvider.events.length,
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: 16);
-                },
-                itemBuilder: (context, index) {
-                  final event = eventProvider.events[index];
-                  return EventCard(event);
-                },
-              ),
-            ),
-          ],
-        ),
+                // Event cards positioned on the map
+                Positioned(
+                  left: 50, // Adjust the X position as needed
+                  top: 100, // Adjust the Y position as needed
+                  child: recommendedEvents.length > 0
+                      ? MapEventCard(recommendedEvents[0])
+                      : SizedBox(), // Replace with your event data
+                ),
+                Positioned(
+                  left: 210, // Adjust the X position as needed
+                  top: 250, // Adjust the Y position as needed
+                  child: recommendedEvents.length > 1
+                      ? MapEventCard(recommendedEvents[1])
+                      : SizedBox(), // Replace with your event data
+                ),
+
+                // Add more Positioned widgets for additional event cards
+                Positioned(
+                  left: left, // Center the avatar horizontally
+                  top: 370, // Adjust the Y position as needed
+                  child: Column(
+                    children: [
+                      Container(
+                        width: avatarWidth,
+                        height: avatarWidth,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.transparent,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.05),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Image.asset(
+                          'assets/images/youravatar.png', // Replace with your avatar image path
+                          width: avatarWidth,
+                          height: avatarWidth,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'YOU',
+                        style: TextStyle(
+                          color: Colors.pink,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+        },
       ),
       bottomNavigationBar: Navigation_Bar(currentIndex: currentIndex),
+
       extendBody: true, // Allows the FAB to be above the navigation bar
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-
       floatingActionButton: Align(
         alignment: Alignment.bottomLeft,
         child: Padding(
@@ -124,9 +192,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 150,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      HomeMapScreen.routeName,
-                      (_) => false,
+                    Navigator.of(context).pushNamed(
+                      HomeSimpleScreen.routeName,
+                      
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -139,14 +207,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Map View',
+                        'Simple View',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Icon(
-                        Icons.map,
+                        Icons.list,
                         color: Colors.white,
                       ),
                     ],
@@ -159,12 +227,26 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  Future<List<Event>> _initializeProviders(BuildContext context) async {
+    final eventProvider = Provider.of<EventProvider>(context);
+    final userDummyProvider = Provider.of<UserDummyProvider>(context);
+
+    final topCategory1 = userDummyProvider.topCategory1;
+    final topCategory2 = userDummyProvider.topCategory2;
+
+    // Fetch recommended events and return them
+    final events =
+        await eventProvider.fetchRecommendedEvents(topCategory1, topCategory2);
+
+    return events;
+  }
 }
 
-class EventCard extends StatelessWidget {
-  final Event event;
+class MapEventCard extends StatelessWidget {
+  final Event? event; // Accept a nullable Event
 
-  EventCard(this.event);
+  MapEventCard(this.event);
 
   @override
   Widget build(BuildContext context) {
@@ -172,8 +254,7 @@ class EventCard extends StatelessWidget {
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
-    bool hasJoined = event.joinedParticipants.contains(userId);
-
+    bool hasJoined = event?.joinedParticipants?.contains(userId) ?? false;
     EventModal myEventModal = EventModal(event, hasJoined);
 
     return InkWell(
@@ -187,23 +268,24 @@ class EventCard extends StatelessWidget {
         elevation: 4,
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(8),
+          width: 150, // Adjust the width as needed
+          padding: EdgeInsets.all(4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  event.thumbnail,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 200,
+              if (event != null)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    event!.thumbnail,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 100,
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
+              SizedBox(height: 4),
               Container(
-                padding: EdgeInsets.all(8),
+                padding: EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -211,18 +293,23 @@ class EventCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      event.title,
+                      event?.title ?? 'No Event',
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 2),
                     Text(
-                      '${DateFormat('EEEE, MMMM d, y').format(event.date)}', // Format the date
-                      style: TextStyle(fontSize: 16),
+                      event != null
+                          ? DateFormat('EEEE, MMMM d').format(event!.date)
+                          : 'No Date',
+                      style: TextStyle(fontSize: 12),
                     ),
+                    SizedBox(height: 2),
                     Text(
-                      'Location: ${event.location}',
-                      style: TextStyle(fontSize: 16),
+                      event != null
+                          ? 'Location: ${event!.location}'
+                          : 'No Location',
+                      style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),

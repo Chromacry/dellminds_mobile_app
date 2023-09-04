@@ -25,7 +25,7 @@ class _NavigationBarState extends State<Navigation_Bar> {
         // Navigate to different pages based on the selected tab
         switch (index) {
           case 0:
-            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
             break;
           case 1:
             Navigator.pushNamed(context, '/community');
@@ -44,7 +44,7 @@ class _NavigationBarState extends State<Navigation_Bar> {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.schedule),
+          icon: Icon(Icons.group),
           label: 'Community',
         ),
         BottomNavigationBarItem(
