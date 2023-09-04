@@ -2,8 +2,8 @@ import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/constants/global_constants.dart';
 import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
+import 'package:dellminds_mobile_app/screens/event/event_all.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
-import 'package:dellminds_mobile_app/screens/login/login.dart';
 import 'package:dellminds_mobile_app/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +23,6 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
-
     // Get the screen width
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -33,91 +31,162 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
     double left = (screenWidth - avatarWidth) / 2;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Events',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-          ),
-        ),
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
-      body: Stack(
-        children: [
-          //! Real Map API should go here
-          ClipRRect(
-            child: Image.asset(
-              'assets/images/homemap.jpg', // Replace with your map image
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(55.0), // Adjust the height as needed
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: DesignConstants.COLOR_THEMEPINK,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20), // Adjust the radius as needed
             ),
           ),
-          // Event cards positioned on the map
-          Positioned(
-            left: 50, // Adjust the X position as needed
-            top: 100, // Adjust the Y position as needed
-            child: MapEventCard(
-                eventProvider.events[0]), // Replace with your event data
+          title: Text(
+            'Events (Map View)',
+            style: TextStyle(fontSize: 20),
           ),
-          Positioned(
-            left: 210, // Adjust the X position as needed
-            top: 250, // Adjust the Y position as needed
-            child: MapEventCard(
-                eventProvider.events[1]), // Replace with your event data
-          ),
-          // Add more Positioned widgets for additional event cards
-          Positioned(
-            left: left, // Center the avatar horizontally
-            top: 370, // Adjust the Y position as needed
-            child: Column(
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
+      ),
+      body: FutureBuilder<List<Event>>(
+        future: _initializeProviders(context), // Fetch recommended events
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // While the data is loading, you can display a loading indicator
+            return Center(
+                child:
+                    CircularProgressIndicator()); // Replace with your loading widget
+          } else if (snapshot.hasError) {
+            // If an error occurred, handle it here
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            // Once the data is loaded, you can access it as snapshot.data
+            final recommendedEvents =
+                snapshot.data ?? []; // Default to an empty list if data is null
+
+            return Stack(
               children: [
-                Container(
-                  width: avatarWidth,
-                  height: avatarWidth,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.transparent,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.blue.withOpacity(0.05),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                //! Real Map API should go here
+                ClipRRect(
+                  child: Image.asset(
+                    'assets/images/homemap.jpg', // Replace with your map image
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                // Event cards positioned on the map
+                Positioned(
+                  left: 50, // Adjust the X position as needed
+                  top: 100, // Adjust the Y position as needed
+                  child: recommendedEvents.length > 0
+                      ? MapEventCard(recommendedEvents[0])
+                      : SizedBox(), // Replace with your event data
+                ),
+                Positioned(
+                  left: 210, // Adjust the X position as needed
+                  top: 250, // Adjust the Y position as needed
+                  child: recommendedEvents.length > 1
+                      ? MapEventCard(recommendedEvents[1])
+                      : SizedBox(), // Replace with your event data
+                ),
+
+                // Add more Positioned widgets for additional event cards
+                Positioned(
+                  left: left, // Center the avatar horizontally
+                  top: 370, // Adjust the Y position as needed
+                  child: Column(
+                    children: [
+                      Container(
+                        width: avatarWidth,
+                        height: avatarWidth,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.transparent,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.05),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Image.asset(
+                          'assets/images/youravatar.png', // Replace with your avatar image path
+                          width: avatarWidth,
+                          height: avatarWidth,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'YOU',
+                        style: TextStyle(
+                          color: Colors.pink,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ],
                   ),
-                  child: Image.asset(
-                    'assets/images/youravatar.png', // Replace with your avatar image path
-                    width: avatarWidth,
-                    height: avatarWidth,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'YOU',
-                  style: TextStyle(
-                    color: Colors.pink,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
                 ),
               ],
-            ),
-          ),
-          // Add a blue button above the navigation bar
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
+            );
+          }
+        },
+      ),
+      bottomNavigationBar: Navigation_Bar(currentIndex: currentIndex),
+
+      extendBody: true, // Allows the FAB to be above the navigation bar
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: Align(
+        alignment: Alignment.bottomLeft,
+        child: Padding(
+          padding: EdgeInsets.zero,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 150,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      EventsAllScreen.routeName,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.grey, // Adjust the color as needed
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'All Events',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Icon(
+                        Icons.event,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
                 width: 150,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        HomeScreen.routeName, (_) => false);
+                      HomeScreen.routeName,
+                      (_) => false,
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue,
@@ -136,25 +205,37 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                         ),
                       ),
                       Icon(
-                        Icons.event,
+                        Icons.list,
                         color: Colors.white,
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
-      bottomNavigationBar: Navigation_Bar(currentIndex: currentIndex),
     );
+  }
+
+  Future<List<Event>> _initializeProviders(BuildContext context) async {
+    final eventProvider = Provider.of<EventProvider>(context);
+    final userDummyProvider = Provider.of<UserDummyProvider>(context);
+
+    final topCategory1 = userDummyProvider.topCategory1;
+    final topCategory2 = userDummyProvider.topCategory2;
+
+    // Fetch recommended events and return them
+    final events =
+        await eventProvider.fetchRecommendedEvents(topCategory1, topCategory2);
+
+    return events;
   }
 }
 
 class MapEventCard extends StatelessWidget {
-  final Event event;
+  final Event? event; // Accept a nullable Event
 
   MapEventCard(this.event);
 
@@ -164,13 +245,14 @@ class MapEventCard extends StatelessWidget {
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
-    bool hasJoined = event.joinedParticipants.contains(userId);
+    bool hasJoined = event?.joinedParticipants?.contains(userId) ?? false;
+    EventModal myEventModal = EventModal(event, hasJoined);
 
     return InkWell(
       onTap: () {
         showDialog(
           context: context,
-          builder: (context) => EventModal(event, hasJoined),
+          builder: (context) => myEventModal,
         );
       },
       child: Material(
@@ -182,15 +264,16 @@ class MapEventCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  event.thumbnail,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 100,
+              if (event != null)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    event!.thumbnail,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 100,
+                  ),
                 ),
-              ),
               SizedBox(height: 4),
               Container(
                 padding: EdgeInsets.all(6),
@@ -201,18 +284,22 @@ class MapEventCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      event.title,
+                      event?.title ?? 'No Event',
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 2),
                     Text(
-                      DateFormat('EEEE, MMMM d').format(event.date),
+                      event != null
+                          ? DateFormat('EEEE, MMMM d').format(event!.date)
+                          : 'No Date',
                       style: TextStyle(fontSize: 12),
                     ),
                     SizedBox(height: 2),
                     Text(
-                      'Location: ${event.location}',
+                      event != null
+                          ? 'Location: ${event!.location}'
+                          : 'No Location',
                       style: TextStyle(fontSize: 12),
                     ),
                   ],
@@ -225,116 +312,3 @@ class MapEventCard extends StatelessWidget {
     );
   }
 }
-
-class EventModal extends StatelessWidget {
-  final Event event;
-  final bool hasJoined;
-
-  EventModal(this.event, this.hasJoined);
-
-  @override
-  Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
-    final userDummyProvider = Provider.of<UserDummyProvider>(context);
-    final userId = userDummyProvider.userId;
-
-    debugPrint('$userId');
-
-    return Dialog(
-      child: Container(
-        padding: EdgeInsets.all(16),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            // Thumbnail
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                event.thumbnail,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: 200, // Adjust the height as needed
-              ),
-            ),
-            SizedBox(height: 16),
-            // Title
-            Text(
-              event.title,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            // Date and Location
-            // Date and Location
-            Text(
-              '${DateFormat('EEEE, MMMM d, y').format(event.date)}', // Format the date
-              style: TextStyle(fontSize: 16),
-            ),
-
-            Text(
-              'Location: ${event.location}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            // Description
-            Text(
-              event.description,
-              style: TextStyle(fontSize: 16),
-            ),
-            // Joined Participants and Max Participants
-            Row(
-              children: [
-                Text(
-                  'Joined Participants',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Container(
-                  margin: EdgeInsets.all(2.0),
-                  width: 40, // Adjust the size of the circle
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green, // Use a different color
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(2.0),
-                      child: Text(
-                        '${event.joinedParticipants.length}/${event.maxParticipants}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8),
-              ],
-            ),
-
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                if (hasJoined) {
-                  eventProvider.leaveEvent(event.id, userId!);
-                } else {
-                  eventProvider.joinEvent(event.id, userId!);
-                }
-
-                debugPrint('$event');
-
-                // Close the modal after joining or leaving
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                hasJoined ? 'Leave Event' : 'Join Event',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-

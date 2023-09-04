@@ -177,5 +177,24 @@ flutter:
         - asset: assets/fonts/Poppins/Poppins-BlackItalic.ttf
           weight: 900
           style: italic
+
+    - family: NunitoSans
+      fonts:
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-BoldItalic.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-ExtraBold.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-ExtraBoldItalic.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-ExtraLight.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-ExtraLightItalic.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-Italic.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-Light.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-LightItalic.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-Medium.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-MediumItalic.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-Regular.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-SemiBold.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-SemiBoldItalic.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-Black.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-BlackItalic.ttf
+        - asset: assets/fonts/Nunito_Sans/NunitoSans_10pt-Bold.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

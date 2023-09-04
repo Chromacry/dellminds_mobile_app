@@ -2,6 +2,7 @@ import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/example_provider.dart';
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
+import 'package:dellminds_mobile_app/screens/event/event_all.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
 import 'package:dellminds_mobile_app/screens/home/home_map.dart';
 import 'package:dellminds_mobile_app/screens/login/login.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'widgets/navigation_bar.dart';
 import 'package:intl/intl.dart';
+
 
 
 void main() {
@@ -40,12 +42,27 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<EventProvider>(
           create: (context) => EventProvider(),
         ),
+        ChangeNotifierProvider<EventProvider>(
+          create: (context) => EventProvider(),
+        ),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: DesignConstants.debugBanner,
           title: 'BookBud',
           theme: ThemeData(
+            fontFamily: 'NunitoSans',
             primarySwatch: DesignConstants.COLOR_THEMEPINK,
+            textTheme: TextTheme(
+              bodyMedium: TextStyle(
+                color: DesignConstants
+                    .COLOR_TEXTDARKPINK, // Change this to your desired text color
+                
+              ),
+               bodySmall: TextStyle(
+                color: const Color.fromARGB(255, 66, 38, 47), // Change this to your desired text color
+                
+              ),
+            ),
           ),
           home: WelcomePage(),
           routes: {
@@ -58,8 +75,10 @@ class _MyAppState extends State<MyApp> {
             HomeMapScreen.routeName: (_) {
               return HomeMapScreen();
             },
+            EventsAllScreen.routeName: (_) {
+              return EventsAllScreen();
+            },
           }),
     );
   }
 }
-

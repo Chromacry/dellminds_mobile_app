@@ -13,7 +13,11 @@ class DesignConstants {
       0xFF393939; //* Darkgray background color
   static const int COLOR_LIGHTBLUE_ACCENT = 0xFF9BD4FF; //* Button
 
-  static const MaterialColor COLOR_THEMEPINK = Colors.pink; //* Button
+  static const MaterialColor COLOR_THEMEPINK = Colors.pink; 
+  static const Color COLOR_TEXTDARKPINK = Color.fromARGB(255, 75, 10, 32); 
+  static const Color COLOR_TEXTDESCRIPTION = Color.fromARGB(255, 162, 129, 132); 
+
+
 
 
 }

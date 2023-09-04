@@ -21,14 +21,27 @@ class _QuizSuccessPageState extends State<QuizSuccessPage> {
   @override
   void initState() {
     super.initState();
-    quizProvider = Provider.of<QuizProvider>(context,
-        listen: false); // Initialize quizProvider
+    // Initialize the providers here using await
+    _initializeProviders();
+  }
+
+  Future<void> _initializeProviders() async {
+    quizProvider = Provider.of<QuizProvider>(context, listen: false);
     userDummyProvider = Provider.of<UserDummyProvider>(context, listen: false);
 
     final randomUserId = generateRandomUserId();
-    final recommendedCategory = quizProvider.getCategoryWithHighestScore();
 
-    userDummyProvider.setUserInfo(randomUserId, recommendedCategory);
+    // Await asynchronous method
+    await quizProvider.calculateAndStoreTopCategories(context);
+
+    final topCategory1 = userDummyProvider.topCategory1;
+    final topCategory2 = userDummyProvider.topCategory2;
+
+    userDummyProvider.setUserInfo(randomUserId, topCategory1, topCategory2);
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -93,9 +106,9 @@ class _QuizSuccessPageState extends State<QuizSuccessPage> {
       ),
     );
   }
-}
 
-String generateRandomUserId() {
-  final uuid = Uuid();
-  return uuid.v4();
+  String generateRandomUserId() {
+    final uuid = Uuid();
+    return uuid.v4();
+  }
 }
