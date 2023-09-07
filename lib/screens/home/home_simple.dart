@@ -20,7 +20,6 @@ class HomeSimpleScreen extends StatefulWidget {
 }
 
 class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
-
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
@@ -29,7 +28,7 @@ class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55.0), // Adjust the height as needed
         child: AppBar(
-            automaticallyImplyLeading: false, 
+          automaticallyImplyLeading: false,
           backgroundColor: DesignConstants.COLOR_THEMEPINK,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -42,48 +41,67 @@ class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
                 'Events',
                 style: TextStyle(fontSize: 20),
               ),
-              SizedBox(width: 5), // Add some spacing between the title and the icon
+              SizedBox(
+                  width: 5), // Add some spacing between the title and the icon
               Icon(
                 Icons.list, // Use the map icon here
                 color: Colors.white, // You can adjust the icon color
               ),
             ],
           ),
-          
           iconTheme: IconThemeData(color: Colors.black),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Add the header here
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-              child: Text(
-                'Recommended Events',
-                style: TextStyle(
-                  fontSize: 18, // Adjust the font size as needed
-                  fontWeight: FontWeight.bold,
-                ),
+      body: FutureBuilder<List<Event>>(
+        future: _initializeProviders(context), // Fetch recommended events
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // While the data is loading, you can display a loading indicator
+            return Center(
+                child:
+                    CircularProgressIndicator()); // Replace with your loading widget
+          } else if (snapshot.hasError) {
+            // If an error occurred, handle it here
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            // Once the data is loaded, you can access it as snapshot.data
+            final recommendedEvents =
+                snapshot.data ?? []; // Default to an empty list if data is null
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Add the header here
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+                    child: Text(
+                      'Recommended Events',
+                      style: TextStyle(
+                        fontSize: 18, // Adjust the font size as needed
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: recommendedEvents.length,
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 16);
+                      },
+                      itemBuilder: (context, index) {
+                        final event = recommendedEvents[index];
+                        return EventCard(event);
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Expanded(
-              child: ListView.separated(
-                shrinkWrap: true,
-                itemCount: eventProvider.events.length,
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: 16);
-                },
-                itemBuilder: (context, index) {
-                  final event = eventProvider.events[index];
-                  return EventCard(event);
-                },
-              ),
-            ),
-          ],
-        ),
+            );
+          }
+        },
       ),
       extendBody: true, // Allows the FAB to be above the navigation bar
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
@@ -134,7 +152,6 @@ class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
                   onPressed: () {
                     Navigator.of(context).pushNamed(
                       HomeScreen.routeName,
-                      
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -167,6 +184,20 @@ class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
       ),
     );
   }
+
+  Future<List<Event>> _initializeProviders(BuildContext context) async {
+    final eventProvider = Provider.of<EventProvider>(context);
+    final userDummyProvider = Provider.of<UserDummyProvider>(context);
+
+    final topCategory1 = userDummyProvider.topCategory1;
+    final topCategory2 = userDummyProvider.topCategory2;
+
+    // Fetch recommended events and return them
+    final events =
+        await eventProvider.fetchRecommendedEvents(topCategory1, topCategory2);
+
+    return events;
+  }
 }
 
 class EventCard extends StatelessWidget {
@@ -180,9 +211,10 @@ class EventCard extends StatelessWidget {
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
-    bool hasJoined = event.joinedParticipants.contains(userId);
+    bool hasSignedUp = event.joinedParticipants.contains(userId);
+    bool inProgress = event.attendees.contains(userId);
 
-    EventModal myEventModal = EventModal(event, hasJoined);
+    EventModal myEventModal = EventModal(event, hasSignedUp, inProgress);
 
     return InkWell(
       onTap: () {

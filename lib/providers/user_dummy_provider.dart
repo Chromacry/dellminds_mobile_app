@@ -6,6 +6,9 @@ class UserDummyProvider extends ChangeNotifier {
   String topCategory2 = 'None';
   String? get userId => _userId;
 
+  Set<int> joinedEvents = {}; // Store event IDs of joined events
+  Set<int> completedEvents = {}; // Store event IDs of completed events
+
    void storeTopCategories(String category1, String category2) {
     topCategory1 = category1;
     topCategory2 = category2;
@@ -19,4 +22,15 @@ class UserDummyProvider extends ChangeNotifier {
     topCategory2 = category2;
     notifyListeners();
   }
+
+  void joinEvent(int eventId) {
+    joinedEvents.add(eventId);
+    notifyListeners();
+  }
+
+  void completeEvent(int eventId) {
+    completedEvents.add(eventId);
+    notifyListeners();
+  }
+  
 }

@@ -20,7 +20,7 @@ class OnboardingPage1 extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                'BookBud allows you to find your friends and join events with them!',
+                'BookBud helps make it easy to join events!',
                 style: OnboardingStyles.subheaderText,
               ),
               SizedBox(height: 40),

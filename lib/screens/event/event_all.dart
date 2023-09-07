@@ -180,9 +180,11 @@ class EventCard extends StatelessWidget {
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
-    bool hasJoined = event.joinedParticipants.contains(userId);
+    bool hasSignedUp = event.joinedParticipants.contains(userId);
+    bool inProgress = event.attendees.contains(userId);
 
-    EventModal myEventModal = EventModal(event, hasJoined);
+    EventModal myEventModal = EventModal(event, hasSignedUp, inProgress);
+
 
     return InkWell(
       onTap: () {

@@ -13,6 +13,7 @@ class Event {
   final String location;
   final List<String> joinedParticipants;
   final int maxParticipants;
+  final List<String> attendees; // List of user IDs who attended the event
   final String description;
   final String thumbnail;
   final String activity;
@@ -25,6 +26,7 @@ class Event {
     required this.location,
     required this.joinedParticipants,
     required this.maxParticipants,
+    required this.attendees,
     required this.description,
     required this.thumbnail,
     required this.activity,
@@ -46,6 +48,7 @@ class EventProvider extends ChangeNotifier {
       location: 'Stadium',
       joinedParticipants: [],
       maxParticipants: 20,
+      attendees: [],
       description: 'A friendly football match.',
       thumbnail: 'assets/images/event_images/football.png',
       activity: 'Football',
@@ -58,6 +61,7 @@ class EventProvider extends ChangeNotifier {
       location: 'Art Studio',
       joinedParticipants: [],
       maxParticipants: 15,
+      attendees: [],
       description: 'Learn to create beautiful paintings.',
       thumbnail: 'assets/images/event_images/painting.jpg',
       activity: 'Painting',
@@ -70,6 +74,7 @@ class EventProvider extends ChangeNotifier {
       location: 'Park',
       joinedParticipants: [],
       maxParticipants: 30,
+      attendees: [],
       description: 'Explore the beauty of nature.',
       thumbnail: 'assets/images/event_images/naturewalk.jpg',
       activity: 'Nature Walk',
@@ -90,8 +95,6 @@ class EventProvider extends ChangeNotifier {
     _recommendedEvents = getRecommendedEvents(topCategory1, topCategory2);
 
     print(_recommendedEvents);
-
-    
 
     notifyListeners();
 
@@ -124,30 +127,61 @@ class EventProvider extends ChangeNotifier {
     return null;
   }
 
-  void joinEvent(int eventId, String userId) {
+  void joinEvent(int eventId, String userId, BuildContext context) {
     final event = findEventById(eventId);
+    final userProvider = Provider.of<UserDummyProvider>(context, listen: false);
+
     if (event != null) {
       if (event.joinedParticipants.length < event.maxParticipants) {
         event.joinedParticipants.add(userId);
+        userProvider.joinEvent(eventId);
+
         notifyListeners();
+      } else {
+        // Show a dialog when the event is full
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            content: Text('The event is full. You cannot join.'),
+          ),
+        );
       }
     }
   }
 
-  void leaveEvent(int eventId, String userId) {
+  void checkInEvent(int eventId, String userId, BuildContext context) {
     final event = findEventById(eventId);
+    final userProvider = Provider.of<UserDummyProvider>(context, listen: false);
+
+    if (event != null) {
+      event.attendees.add(userId);
+      userProvider.completeEvent(eventId);
+
+      notifyListeners();
+    }
+  }
+
+  void leaveEvent(int eventId, String userId, BuildContext context) {
+    final event = findEventById(eventId);
+    final userProvider = Provider.of<UserDummyProvider>(context, listen: false);
+
     if (event != null) {
       event.joinedParticipants.remove(userId);
+      userProvider.joinedEvents.remove(eventId);
       notifyListeners();
     }
   }
 }
 
+
+
+
 class EventModal extends StatelessWidget {
   final Event? event;
-  final bool hasJoined;
+  final bool hasSignedUp;
+  final bool inProgress;
 
-  EventModal(this.event, this.hasJoined);
+  EventModal(this.event, this.hasSignedUp, this.inProgress);
 
   @override
   Widget build(BuildContext context) {
@@ -270,44 +304,114 @@ class EventModal extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Container(
-              padding: EdgeInsets.all(8), // Apply padding here
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (hasJoined) {
-                    eventProvider.leaveEvent(event!.id, userId!);
-                  } else {
-                    eventProvider.joinEvent(event!.id, userId!);
-                  }
+              padding: EdgeInsets.all(12),
+              child: inProgress
+                  ? Text(
+                      'Event in progress...',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.green, // You can choose a suitable color
+                      ),
+                    )
+                  : hasSignedUp
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                // Leave Event action
+                                eventProvider.leaveEvent(event!.id, userId!, context);
 
-                  // Delay to ensure the previous dialog is dismissed before showing the new one
-                  await Future.delayed(Duration(milliseconds: 300));
+                                await Future.delayed(
+                                    Duration(milliseconds: 300));
 
-                  // Close the previous dialog
-                  Navigator.of(context).pop();
+                                // Close the previous dialog
+                                Navigator.of(context).pop();
 
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      content: Text(hasJoined
-                          ? 'You have left the event'
-                          : 'You have joined the event'),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: hasJoined ? Colors.red : Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                child: Text(
-                  hasJoined ? 'Leave Event' : 'Join Event',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    content: Text('You have left the event.'),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              child: Text(
+                                'Leave Event',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                eventProvider.checkInEvent(event!.id, userId!, context);
+                                await Future.delayed(
+                                    Duration(milliseconds: 300));
+
+                                Navigator.of(context).pop();
+
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    content: Text(
+                                        'You have checked in for the event, have fun!'),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.green,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              child: Text(
+                                'Check-in',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : ElevatedButton(
+                          onPressed: () async {
+                            eventProvider.joinEvent(
+                                event!.id, userId!, context);
+
+                            await Future.delayed(Duration(milliseconds: 300));
+
+                            Navigator.of(context).pop();
+
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                content:
+                                    Text('You have signed up for the event!'),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          child: Text(
+                            'Sign Up for Event',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
             ),
           ],
         ),

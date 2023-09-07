@@ -134,6 +134,8 @@ List<QuizQuestion> quizQuestions = [
   QuizQuestion('Football', 'Music'),
   QuizQuestion('Painting', 'Basketball'),
   QuizQuestion('Photography', 'Volleyball'),
+  QuizQuestion('Nature Walks', 'Music'),
+
 
   // more questions
 ];

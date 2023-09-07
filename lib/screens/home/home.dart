@@ -31,32 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     double left = (screenWidth - avatarWidth) / 2;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(55.0), // Adjust the height as needed
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: DesignConstants.COLOR_THEMEPINK,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20), // Adjust the radius as needed
-            ),
-          ),
-          title: Row(
-            children: [
-              Text(
-                'Events',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(width: 5), // Add some spacing between the title and the icon
-              Icon(
-                Icons.map, // Use the map icon here
-                color: Colors.white, // You can adjust the icon color
-              ),
-            ],
-          ),
-          iconTheme: IconThemeData(color: Colors.black),
-        ),
-      ),
       body: FutureBuilder<List<Event>>(
         future: _initializeProviders(context), // Fetch recommended events
         builder: (context, snapshot) {
@@ -194,7 +168,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     Navigator.of(context).pushNamed(
                       HomeSimpleScreen.routeName,
-                      
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -254,8 +227,10 @@ class MapEventCard extends StatelessWidget {
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
-    bool hasJoined = event?.joinedParticipants?.contains(userId) ?? false;
-    EventModal myEventModal = EventModal(event, hasJoined);
+    bool hasSignedUp = event?.joinedParticipants.contains(userId) ?? false;
+    bool inProgress = event?.attendees.contains(userId) ?? false;
+
+    EventModal myEventModal = EventModal(event, hasSignedUp, inProgress);
 
     return InkWell(
       onTap: () {

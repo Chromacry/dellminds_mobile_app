@@ -76,7 +76,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/logo/hydrosense_icon.png
+    - assets/logo/bookbud_icon.png
+    - assets/logo/bookbud_texticon.png
     - assets/images/google-icon.png
     - assets/images/facebook-icon.png
     - assets/images/event_images/football.png
