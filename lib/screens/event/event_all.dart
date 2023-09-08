@@ -1,11 +1,7 @@
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
-import 'package:dellminds_mobile_app/constants/global_constants.dart';
 import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
-import 'package:dellminds_mobile_app/screens/home/home.dart';
-import 'package:dellminds_mobile_app/screens/login/login.dart';
 import 'package:dellminds_mobile_app/widgets/category_filter.dart';
-import 'package:dellminds_mobile_app/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -20,14 +16,12 @@ class EventsAllScreen extends StatefulWidget {
 }
 
 class _EventsAllScreenState extends State<EventsAllScreen> {
-  String searchText = ''; // Store user's input text for filtering
-  String selectedCategory = 'All'; // Initialize with 'All'
+  String searchText = '';
+  String selectedCategory = 'All';
 
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
-
-    // Filter the event list based on the user's input text
     final filteredEvents = eventProvider.events.where((event) {
       final eventCategory = event.category;
       final eventTitle = event.title.toLowerCase();
@@ -38,90 +32,90 @@ class _EventsAllScreenState extends State<EventsAllScreen> {
     }).toList();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
+      body: Column(
+        children: [
+          //! To get around grey bar ontop of emulator
+
+          Container(
+            height: 55,
+            padding: EdgeInsets.symmetric(vertical: 16),
+            color: DesignConstants.COLOR_THEMEPINK,
           ),
-        ),
-         title: Row(
-            children: [
-              Text(
-                'Events (All)',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(width: 5), // Add some spacing between the title and the icon
-              Icon(
-                Icons.event, // Use the map icon here
-                color: Colors.white, // You can adjust the icon color
-              ),
-            ],
-          ),
-        automaticallyImplyLeading: false,
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Color.fromARGB(255, 253, 200, 218),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search...',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.search),
+          Container(
+            color: DesignConstants.COLOR_THEMEPINK,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Events (All)',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      onChanged: (text) {
-                        setState(() {
-                          searchText = text;
-                        });
-                      },
-                    ),
+                      SizedBox(width: 5),
+                      Icon(
+                        Icons.event,
+                        color: Colors.white,
+                      ),
+                    ],
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal:10),
-                    child: CategoryFilterWidget(
-                      onCategorySelected: (category) {
-                        setState(() {
-                          selectedCategory = category;
-                        });
-                      },
-                    ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color.fromARGB(255, 253, 200, 218),
                   ),
-                  SizedBox(width: 16),
-                ],
-              ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.search),
+                    ),
+                    onChanged: (text) {
+                      setState(() {
+                        searchText = text;
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  child: CategoryFilterWidget(
+                    onCategorySelected: (category) {
+                      setState(() {
+                        selectedCategory = category;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: ListView.separated(
-                shrinkWrap: true,
-                itemCount: filteredEvents.length,
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: 16);
-                },
-                itemBuilder: (context, index) {
-                  final event = filteredEvents[index];
-                  return EventCard(event);
-                },
-              ),
+          ),
+          Expanded(
+            child: ListView.separated(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              itemCount: filteredEvents.length,
+              separatorBuilder: (context, index) {
+                return SizedBox(height: 16);
+              },
+              itemBuilder: (context, index) {
+                final event = filteredEvents[index];
+                return EventCard(event);
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      extendBody: true, // Allows the FAB to be above the navigation bar
+      extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Align(
         alignment: Alignment.bottomLeft,
@@ -138,7 +132,7 @@ class _EventsAllScreenState extends State<EventsAllScreen> {
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: DesignConstants.COLOR_THEMEPINK,
+                    backgroundColor: DesignConstants.COLOR_THEMEPINK,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -184,7 +178,6 @@ class EventCard extends StatelessWidget {
     bool inProgress = event.attendees.contains(userId);
 
     EventModal myEventModal = EventModal(event, hasSignedUp, inProgress);
-
 
     return InkWell(
       onTap: () {

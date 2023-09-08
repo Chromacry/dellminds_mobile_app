@@ -1,5 +1,4 @@
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
-import 'package:dellminds_mobile_app/models/activity.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,10 +32,7 @@ class Event {
     required this.category,
   });
 
-  @override
-  String toString() {
-    return 'Event{id: $id, title: $title, date: $date, location: $location, joinedParticipants: $joinedParticipants, maxParticipants: $maxParticipants, thumbnail: $thumbnail}';
-  }
+  
 }
 
 class EventProvider extends ChangeNotifier {
@@ -336,7 +332,7 @@ class EventModal extends StatelessWidget {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.red,
+                                backgroundColor: Colors.red,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
@@ -366,7 +362,7 @@ class EventModal extends StatelessWidget {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
+                                backgroundColor: Colors.green,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
@@ -399,7 +395,7 @@ class EventModal extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.green,
+                            backgroundColor: Colors.green,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),

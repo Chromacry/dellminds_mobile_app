@@ -53,7 +53,7 @@ class OnboardingStyles{
 
 class ButtonStyles {
   static final commonStyle = ElevatedButton.styleFrom(
-    primary: Colors.white,
+    backgroundColor: Colors.white,
     elevation: 2,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),

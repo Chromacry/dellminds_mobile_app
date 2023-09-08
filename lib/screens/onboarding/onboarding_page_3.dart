@@ -1,7 +1,6 @@
-import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_4.dart';
 import 'package:flutter/material.dart';
-import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
+import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_4.dart';
 
 class OnboardingPage3 extends StatelessWidget {
   @override
@@ -13,88 +12,55 @@ class OnboardingPage3 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Header and subheader
+
               Text(
-                'Quiz Example',
+                'Welcome to the community!',
                 style: OnboardingStyles.headerText,
               ),
-              SizedBox(height: 40),
-
-              //* Quiz example option 1 
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => OnboardingPage4()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: OnboardingStyles.quizButtonTextColor,
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  minimumSize: Size(
-                    OnboardingStyles.quizButtonWidth,
-                    OnboardingStyles.quizButtonHeight,
-                  ),
-                ).copyWith(
-                  backgroundColor: ButtonStyles.sportsStyle
-                      .backgroundColor, // Maintain the primary color
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.sports_soccer,
-                      size: 50, 
-                      color: OnboardingStyles.nextButtonArrowColor,
-                    ),
-                    SizedBox(height: 10), 
-                    Text(
-                      'Football',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(height: 20),
-
-              //* Quiz example option 1           
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => OnboardingPage4()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: OnboardingStyles.quizButtonTextColor,
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  minimumSize: Size(
-                    OnboardingStyles.quizButtonWidth,
-                    OnboardingStyles.quizButtonHeight,
-                  ),
-                ).copyWith(
-                  backgroundColor: ButtonStyles
-                      .artsStyle.backgroundColor, // Maintain the primary color
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.brush,
-                      size: 50, // Adjust the icon size
-                      color: OnboardingStyles.nextButtonArrowColor,
+              Text(
+                'Now, we have to found out what activities you like through a simple quiz!',
+                style: OnboardingStyles.subheaderText,
+              ),
+              SizedBox(height: 40),
+              // Next button
+              Container(
+                width: OnboardingStyles.nextButtonWidth,
+                height: OnboardingStyles.nextButtonHeight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OnboardingPage4()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: OnboardingStyles.nextButtonColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          OnboardingStyles.nextButtonWidth /
+                              6), // Adjust the radius
                     ),
-                    SizedBox(height: 10), // Add some vertical spacing
-                    Text(
-                      'Painting',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.arrow_forward,
+                        color: OnboardingStyles.nextButtonArrowColor,
+                        size: OnboardingStyles.nextButtonArrowSize,
+                      ),
+                      Text(
+                        'Next',
+                        style: TextStyle(
+                          color: OnboardingStyles.nextButtonTextColor,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

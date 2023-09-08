@@ -20,10 +20,10 @@ class LoginStyles {
   static const TextStyle buttonText = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 25,
-    color: Colors.black,
+    color: Colors.white,
   );
   static const Color iconColor = Colors.black;
-  static const int buttonColor = DesignConstants.COLOR_LIGHTBLUE_ACCENT;
+  static const Color buttonColor = DesignConstants.COLOR_THEMEPINK;
 
 
 }

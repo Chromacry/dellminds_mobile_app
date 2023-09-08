@@ -1,8 +1,8 @@
+import 'package:dellminds_mobile_app/screens/quiz/quiz_page_1.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
-import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_2.dart';
 
-class OnboardingPage1 extends StatelessWidget {
+class OnboardingPage5 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,28 +12,19 @@ class OnboardingPage1 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Header and subheader
               Text(
-                'What else does BookBud do?',
+                'Good Pick! Ready to begin?',
                 style: OnboardingStyles.headerText,
               ),
-              SizedBox(height: 20),
-              Text(
-                'BookBud helps make it easy to join events by catering to your tastes!',
-                style: OnboardingStyles.subheaderText,
-              ),
               SizedBox(height: 40),
-
-              // Next button
               Container(
                 width: OnboardingStyles.nextButtonWidth,
                 height: OnboardingStyles.nextButtonHeight,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => OnboardingPage2()),
+                      MaterialPageRoute(builder: (context) => QuizPage1()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -53,7 +44,7 @@ class OnboardingPage1 extends StatelessWidget {
                         size: OnboardingStyles.nextButtonArrowSize,
                       ),
                       Text(
-                        'Next',
+                        'Start Quiz',
                         style: TextStyle(
                           color: OnboardingStyles.nextButtonTextColor,
                           fontSize: 18,

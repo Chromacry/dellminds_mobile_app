@@ -1,7 +1,7 @@
+import 'package:dellminds_mobile_app/screens/login/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
-import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_3.dart';
+import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_4.dart';
 
 class OnboardingPage2 extends StatelessWidget {
   @override
@@ -16,12 +16,12 @@ class OnboardingPage2 extends StatelessWidget {
               // Header and subheader
 
               Text(
-                'How does it work?',
+                'But first...',
                 style: OnboardingStyles.headerText,
               ),
               SizedBox(height: 20),
               Text(
-                'First, we have to found out what activities you like through a simple quiz!',
+                'Let\'s do a quick sign up! Press the button below to get started.',
                 style: OnboardingStyles.subheaderText,
               ),
               SizedBox(height: 40),
@@ -31,14 +31,12 @@ class OnboardingPage2 extends StatelessWidget {
                 height: OnboardingStyles.nextButtonHeight,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OnboardingPage3()),
+                    Navigator.of(context).pushReplacementNamed(
+                      SignUpScreen.routeName,
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: OnboardingStyles.nextButtonColor,
+                    backgroundColor: OnboardingStyles.nextButtonColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                           OnboardingStyles.nextButtonWidth /
@@ -54,7 +52,7 @@ class OnboardingPage2 extends StatelessWidget {
                         size: OnboardingStyles.nextButtonArrowSize,
                       ),
                       Text(
-                        'Next',
+                        'Sign Up',
                         style: TextStyle(
                           color: OnboardingStyles.nextButtonTextColor,
                           fontSize: 18,

@@ -1,6 +1,5 @@
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_1.dart';
 import 'package:flutter/material.dart';
-import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -19,7 +18,7 @@ class WelcomePage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                'BookBud helps you discover fun activities that you\'ll enjoy!',
+                'BookBud is your gateway to discovering exciting activities tailored to your interests. It\'s also your social hub for sharing memorable experiences with a vibrant community of like-minded individuals',
                 style: OnboardingStyles.subheaderText,
               ),
               SizedBox(height: 40),

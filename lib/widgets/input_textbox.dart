@@ -50,17 +50,17 @@ class _InputTextBoxState extends State<InputTextBox> {
     return TextFormField(
       keyboardType: widget.keyboardType,
       validator: widget.validator,
-      cursorColor: widget.allColorAttributes ?? Colors.white,
+      cursorColor: widget.allColorAttributes ?? Colors.grey,
       autocorrect: widget.autocorrect ?? false,
       enabled: widget.enabled ?? true,
       obscureText: obscureTextEnabled ?? false,
       initialValue: widget.inputTextValue,
       decoration: InputDecoration(
         labelText: widget.inputTextLabelValue,
-        focusColor: widget.allColorAttributes ?? Colors.white,
+        focusColor: widget.allColorAttributes ?? Colors.grey,
         enabledBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: widget.allColorAttributes ?? Colors.white),
+              BorderSide(color: widget.allColorAttributes ?? Colors.grey),
         ),
         suffixIcon: widget.obscureTextEnabled ?? false
             ? InkWell(
@@ -89,17 +89,17 @@ class _InputTextBoxState extends State<InputTextBox> {
         //   ),
         // ),
         labelStyle: TextStyle(
-          color: widget.allColorAttributes ?? Colors.white,
+          color: widget.allColorAttributes ?? Colors.black,
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             width: 2,
-            color: widget.allColorAttributes ?? Colors.white,
+            color: widget.allColorAttributes ?? Colors.pink,
           ),
         ),
       ),
       style: TextStyle(
-        color: widget.allColorAttributes ?? Colors.white,
+        color: widget.allColorAttributes ?? Colors.pink,
       ),
       onChanged: widget.onChanged,
     );

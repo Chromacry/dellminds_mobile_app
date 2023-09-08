@@ -1,4 +1,3 @@
-import 'package:dellminds_mobile_app/models/activity.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
@@ -25,10 +24,8 @@ class QuizProvider extends ChangeNotifier {
 
   //* Updates scores
   void updateScore(String category) {
-    if (category != null) {
-      activityScores[category] = (activityScores[category] ?? 0) + 1;
-      notifyListeners();
-    }
+    activityScores[category] = (activityScores[category] ?? 0) + 1;
+    notifyListeners();
   }
 
   String getCategoryFromChosenOption(String chosenOption) {

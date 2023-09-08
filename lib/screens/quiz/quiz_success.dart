@@ -1,10 +1,7 @@
-import 'package:dellminds_mobile_app/main.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
-import 'package:dellminds_mobile_app/screens/home/home_simple.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
-import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -75,7 +72,7 @@ class _QuizSuccessPageState extends State<QuizSuccessPage> {
                       HomeScreen.routeName, (_) => false);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: OnboardingStyles.nextButtonColor,
+                  backgroundColor: OnboardingStyles.nextButtonColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                         OnboardingStyles.nextButtonWidth /

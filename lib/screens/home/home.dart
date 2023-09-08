@@ -1,5 +1,3 @@
-import 'package:dellminds_mobile_app/constants/design_constants.dart';
-import 'package:dellminds_mobile_app/constants/global_constants.dart';
 import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'package:dellminds_mobile_app/screens/event/event_all.dart';
@@ -139,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.grey, // Adjust the color as needed
+                    backgroundColor: Colors.grey, // Adjust the color as needed
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -171,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
+                    backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),

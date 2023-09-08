@@ -1,11 +1,9 @@
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
-import 'package:dellminds_mobile_app/constants/global_constants.dart';
 import 'package:dellminds_mobile_app/providers/event_provider.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'package:dellminds_mobile_app/screens/event/event_all.dart';
+import 'package:dellminds_mobile_app/screens/event/event_details.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
-import 'package:dellminds_mobile_app/screens/login/login.dart';
-import 'package:dellminds_mobile_app/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -25,87 +23,76 @@ class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
     final eventProvider = Provider.of<EventProvider>(context);
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(55.0), // Adjust the height as needed
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: DesignConstants.COLOR_THEMEPINK,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20), // Adjust the radius as needed
+      body: Column(
+        children: [
+          //! To get around grey bar ontop of emulator
+
+          Container(
+            height: 55,
+            padding: EdgeInsets.symmetric(vertical: 16),
+            color: DesignConstants.COLOR_THEMEPINK,
+          ),
+
+          // Pink Header
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            color: DesignConstants.COLOR_THEMEPINK,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Events for you',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Icon(
+                  Icons.star,
+                  color: Colors.white,
+                ),
+              ],
             ),
           ),
-          title: Row(
-            children: [
-              Text(
-                'Events',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                  width: 5), // Add some spacing between the title and the icon
-              Icon(
-                Icons.list, // Use the map icon here
-                color: Colors.white, // You can adjust the icon color
-              ),
-            ],
-          ),
-          iconTheme: IconThemeData(color: Colors.black),
-        ),
-      ),
-      body: FutureBuilder<List<Event>>(
-        future: _initializeProviders(context), // Fetch recommended events
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // While the data is loading, you can display a loading indicator
-            return Center(
-                child:
-                    CircularProgressIndicator()); // Replace with your loading widget
-          } else if (snapshot.hasError) {
-            // If an error occurred, handle it here
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            // Once the data is loaded, you can access it as snapshot.data
-            final recommendedEvents =
-                snapshot.data ?? []; // Default to an empty list if data is null
+          // Circular Container Background
+          Expanded(
+            child: Container(
+              child: Padding(
+                padding:
+                    const EdgeInsets.all(20.0), // Adjust the padding as needed
+                child: FutureBuilder<List<Event>>(
+                  future: _initializeProviders(context),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      final recommendedEvents = snapshot.data ?? [];
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Add the header here
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-                    child: Text(
-                      'Recommended Events',
-                      style: TextStyle(
-                        fontSize: 18, // Adjust the font size as needed
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: recommendedEvents.length,
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 16);
-                      },
-                      itemBuilder: (context, index) {
-                        final event = recommendedEvents[index];
-                        return EventCard(event);
-                      },
-                    ),
-                  ),
-                ],
+                      return ListView.separated(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        itemCount: recommendedEvents.length,
+                        separatorBuilder: (context, index) {
+                          return SizedBox(height: 16);
+                        },
+                        itemBuilder: (context, index) {
+                          final event = recommendedEvents[index];
+                          return EventCard(event);
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
       extendBody: true, // Allows the FAB to be above the navigation bar
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-
       floatingActionButton: Align(
         alignment: Alignment.bottomLeft,
         child: Padding(
@@ -123,7 +110,7 @@ class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.grey, // Adjust the color as needed
+                    backgroundColor: Colors.grey, // Adjust the color as needed
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -155,7 +142,7 @@ class _HomeSimpleScreenState extends State<HomeSimpleScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
+                    backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -211,9 +198,8 @@ class EventCard extends StatelessWidget {
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
-    bool hasSignedUp = event.joinedParticipants.contains(userId);
-    bool inProgress = event.attendees.contains(userId);
-
+    bool hasSignedUp = event?.joinedParticipants.contains(userId) ?? false;
+    bool inProgress = event?.attendees.contains(userId) ?? false;
     EventModal myEventModal = EventModal(event, hasSignedUp, inProgress);
 
     return InkWell(

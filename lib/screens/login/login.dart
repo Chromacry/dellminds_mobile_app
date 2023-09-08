@@ -1,198 +1,125 @@
-import 'package:dellminds_mobile_app/constants/design_constants.dart';
-import 'package:dellminds_mobile_app/constants/global_constants.dart';
-import 'package:dellminds_mobile_app/screens/home/home_simple.dart';
 import 'package:dellminds_mobile_app/screens/login/login_style.dart';
-import 'package:dellminds_mobile_app/widgets/widgets.dart';
+import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_3.dart';
 import 'package:flutter/material.dart';
+import 'package:dellminds_mobile_app/screens/login/forgotPassword.dart';
+import 'package:dellminds_mobile_app/screens/login/signup.dart';
 
 class LoginScreen extends StatelessWidget {
-  static const String routeName = '/login';
-  LoginScreen({super.key});
-  final _loginFormKey = GlobalKey<FormState>();
   @override
-  Widget build(context) {
-    String emailaddress = '';
-    String password = '';
+  static const String routeName = '/login';
 
-    String? emailValidator(value) {
-      if (value == null || value.isEmpty) {
-        return 'Email field is empty!';
-      }
-      // Regular expression to match an email address
-      final RegExp emailRegex =
-          RegExp(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$');
-
-      // Check if the value matches the regular expression
-      if (!emailRegex.hasMatch(value)) {
-        return 'Invalid email address!';
-      }
-      return null;
-    }
-
-    String? passwordValidator(value) {
-      if (value == null || value.isEmpty) {
-        return 'Password field is empty!';
-      }
-      return null;
-    }
-
-    void loginHandler() {
-      if (_loginFormKey.currentState!.validate()) {
-        debugPrint('HAHAHAHA ');
-        ScaffoldMessenger.of(context).showSnackBar(
-            StatusSnackbar.snackbarStatus(
-                textMessage: GlobalConstants
-                    .CLIENT_STATUS_MSGS['SUCCESSFUL_LOGIN']
-                    .toString()));
-        //* Login code here
-        //* Redirect to home page
-        Navigator.of(context).pushNamed(HomeSimpleScreen.routeName);
-      }
-    }
-
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Center(child: Text('Login')),
-      //   backgroundColor: Colors.black87,
-      // ),
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color(DesignConstants.COLOR_DARKBLUE_PRIMARY),
-      body: SafeArea(
+      body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Form(
-            key: _loginFormKey,
-            child: Column(
-              children: [
-                //* Logo
-                Container(
-                  width: LoginStyles.logoWidth,
-                  height: LoginStyles.logoHeight,
-                  margin: LoginStyles.logoMargin,
-                  child: Image.asset('assets/logo/hydrosense_icon.png'),
-                ),
-                //* Login Text
-                Container(
-                  margin: LoginStyles.titleContainerMargin,
-                  alignment: LoginStyles.titleAlign,
-                  child: const Text(
-                    'Login',
-                    textAlign: TextAlign.left,
-                    style: LoginStyles.title,
-                  ),
-                ),
-                //* Email Address TextBox
-                Container(
-                  margin: const EdgeInsets.only(bottom: 15),
-                  child: InputTextBox(
-                    inputTextLabelValue: 'Email Address',
-                    onChanged: (text) {
-                      debugPrint(text);
-                      emailaddress = text;
-                    },
-                    obscureTextEnabled: true,
-                    validator: emailValidator,
-                  ),
-                ),
-                //* Password TextBox
-                Container(
-                  child: InputTextBox(
-                    inputTextLabelValue: 'Password',
-                    onChanged: (text) => password = text,
-                    validator: passwordValidator,
-                    obscureTextEnabled: true,
-                  ),
-                ),
-                //* Forget Password Button
-                Container(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    child: const Text(
-                      'forget password?',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic),
-                    ),
-                    onPressed: () =>
-                        debugPrint('Redirecting to forget password page...'),
-                  ),
-                ),
-                //* Submit Button
-                Container(
-                  margin: const EdgeInsets.only(top: 80),
-                  child: ElevatedButton.icon(
-                      onPressed: loginHandler,
-                      style: const ButtonStyle(
-                        enableFeedback: true,
-                        backgroundColor: MaterialStatePropertyAll(
-                            Color(LoginStyles.buttonColor)),
-                        fixedSize:
-                            MaterialStatePropertyAll(LoginStyles.buttonSize),
-                        textStyle:
-                            MaterialStatePropertyAll(LoginStyles.buttonText),
-                      ),
-                      label: const Text('Login', style: LoginStyles.buttonText),
-                      icon: const Icon(
-                        Icons.login_rounded,
-                        color: LoginStyles.iconColor,
-                      )),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                //* Continue With Section
-                LineWithText(
-                  text: 'Continue with',
-                  thickness: 2,
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/signup.png',
+                width: 150,
+                height: 150,
+              ),
+              SizedBox(height: 50),
+              Text(
+                'Create an account',
+                  style: LoginStyles.title,
+
+              ),
+              Text(
+                'Hi, kindly login to continue',
+                style: TextStyle(
                   fontSize: 18,
-                  lineColor: Colors.white,
-                  textColor: Colors.white,
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
-                //* Google and Facebook Icon
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Image.asset(
-                            'assets/images/google-icon.png',
-                            height: 40,
-                            width: 40,
-                          ),
+                    TextFormField(
+                      style: TextStyle(
+                        color: Color(0xFFF84770),
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFF84770)),
                         ),
-                        onTap: () {
-                          debugPrint('Redirecting to google auth');
-                        }),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Image.asset(
-                          'assets/images/facebook-icon.png',
-                          height: 60,
-                          width: 60,
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFF84770)),
                         ),
                       ),
-                      onTap: () => debugPrint('redirecting to facebook auth'),
+                    ),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      style: TextStyle(
+                        color: Color(0xFFF84770),
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFF84770)),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFF84770)),
+                        ),
+                      ),
+                      obscureText: true,
+                    ),
+                    SizedBox(height: 10),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, ForgotPasswordScreen.routeName);
+                      },
+                      child: Text(
+                        'Forgot password',
+                        style: TextStyle(
+                          decoration: TextDecoration.none,
+                          color: const Color.fromARGB(255, 99, 99, 99),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 10),
+              //! TEST FUNCTION ONLY TO BE CHANGED
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OnboardingPage3()),
+                    );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFF84770),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 40, vertical: 20), // Adjust button size here
+                ),
+                child: Text('Confirmed'),
+              ),
+              SizedBox(height: 20),
+              Text("Don't have an account?"),
+              SizedBox(height: 10),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, SignUpScreen.routeName);
+                },
+                child: Text(
+                  'Create Account',
+                  style: TextStyle(
+                    color: Colors.blue, // Blue text color
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

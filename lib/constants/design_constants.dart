@@ -14,6 +14,8 @@ class DesignConstants {
   static const int COLOR_LIGHTBLUE_ACCENT = 0xFF9BD4FF; //* Button
 
   static const MaterialColor COLOR_THEMEPINK = Colors.pink; 
+    static const Color COLOR_LIGHTPINK = Color.fromARGB(255, 170, 96, 121); 
+
   static const Color COLOR_TEXTDARKPINK = Color.fromARGB(255, 75, 10, 32); 
   static const Color COLOR_TEXTDESCRIPTION = Color.fromARGB(255, 162, 129, 132); 
 

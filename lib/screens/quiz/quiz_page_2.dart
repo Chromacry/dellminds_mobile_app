@@ -2,7 +2,6 @@
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
 import 'package:dellminds_mobile_app/screens/quiz/quiz_page_3.dart';
 import 'package:flutter/material.dart';
-import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
 import 'package:provider/provider.dart';
 
@@ -62,8 +61,7 @@ class _QuizPage2State extends State<QuizPage2> {
                   handleAnswer(currentQuestion.option1);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: OnboardingStyles.quizButtonTextColor,
+                  foregroundColor: OnboardingStyles.quizButtonTextColor, backgroundColor: Colors.white,
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -101,8 +99,7 @@ class _QuizPage2State extends State<QuizPage2> {
                   handleAnswer(currentQuestion.option2);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: OnboardingStyles.quizButtonTextColor,
+                  foregroundColor: OnboardingStyles.quizButtonTextColor, backgroundColor: Colors.white,
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
