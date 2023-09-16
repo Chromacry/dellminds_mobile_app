@@ -18,7 +18,7 @@ class WelcomePage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                'BookBud is your gateway to discovering exciting activities tailored to your interests. It\'s also your social hub for sharing memorable experiences with a vibrant community of like-minded individuals',
+                'Your gateway to tailored activities and friendly community!',
                 style: OnboardingStyles.subheaderText,
               ),
               SizedBox(height: 40),

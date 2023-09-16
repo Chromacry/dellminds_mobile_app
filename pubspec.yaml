@@ -51,8 +51,8 @@ dev_dependencies:
 
 #* Added by ZX
 flutter_icons:
-  image_path: "assets/logo/hydrosense_icon.png"
-  adaptive_icon_foreground: "assets/logo/hydrosense_icon.png"
+  image_path: "assets/logo/bookbud_icon.png"
+  adaptive_icon_foreground: "assets/logo/bookbud_icon.png"
   adaptive_icon_background: "assets/logo/bg.png"
   android: true
   ios: true

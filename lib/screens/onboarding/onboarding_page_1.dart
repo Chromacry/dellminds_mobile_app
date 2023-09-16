@@ -14,12 +14,12 @@ class OnboardingPage1 extends StatelessWidget {
             children: [
               // Header and subheader
               Text(
-                'What else does BookBud do?',
+                'What does BookBud do?',
                 style: OnboardingStyles.headerText,
               ),
               SizedBox(height: 20),
               Text(
-                'BookBud helps make it easy to join events by catering to your tastes!',
+                'BookBud helps make it easy to join events by catering to your tastes and makes you part of a community!',
                 style: OnboardingStyles.subheaderText,
               ),
               SizedBox(height: 40),

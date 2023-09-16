@@ -98,13 +98,7 @@ class _MyAppState extends State<MyApp> {
             CreatePostScreen.routeName: (_) {
               return CreatePostScreen();
             },
-            FullPageEventDetails.routeName: (_) {
-              return FullPageEventDetails(
-                event: null,
-                hasSignedUp: false,
-                inProgress: false,
-              );
-            },
+            
           }),
     );
   }
