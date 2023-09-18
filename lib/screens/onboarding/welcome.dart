@@ -15,11 +15,13 @@ class WelcomePage extends StatelessWidget {
               Text(
                 'Welcome to BookBud!',
                 style: OnboardingStyles.headerText,
+                textAlign: TextAlign.center, // Center align the text
               ),
               SizedBox(height: 20),
               Text(
                 'Your gateway to tailored activities and friendly community!',
                 style: OnboardingStyles.subheaderText,
+                textAlign: TextAlign.center, // Center align the text
               ),
               SizedBox(height: 40),
               Container(
@@ -30,15 +32,17 @@ class WelcomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OnboardingPage1()),
+                        builder: (context) => OnboardingPage1(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: OnboardingStyles.nextButtonColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                          OnboardingStyles.nextButtonWidth /
-                              6), // Adjust the radius
+                        OnboardingStyles.nextButtonWidth /
+                            6, // Adjust the radius
+                      ),
                     ),
                   ),
                   child: Row(

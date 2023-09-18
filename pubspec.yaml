@@ -42,7 +42,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   uuid: ^3.0.7
   file_picker: ^4.0.0
-
+  http: ^1.1.0
+  youtube_player_flutter: ^8.1.0
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +90,28 @@ flutter:
     - assets/images/youravatar.png
     - assets/images/defaultpfp.jpg
     - assets/images/signup.png
+    - assets/tutorial_slides/1.png
+    - assets/tutorial_slides/2.png
+    - assets/tutorial_slides/3.png
+    - assets/tutorial_slides/4.png
+    - assets/tutorial_slides/5.png
+    - assets/tutorial_slides/6.png
+    - assets/tutorial_slides/7.png
+    - assets/tutorial_slides/8.png
+    - assets/tutorial_slides/9.png
+    - assets/tutorial_slides/10.png
+    - assets/tutorial_slides/11.png
+    - assets/tutorial_slides/12.png
+    - assets/tutorial_slides/13.png
+    - assets/tutorial_slides/14.png
+    - assets/tutorial_slides/15.png
+    - assets/tutorial_slides/16.png
+    - assets/tutorial_slides/17.png
+    - assets/tutorial_slides/18.png
+    - assets/tutorial_slides/19.png
+    - assets/tutorial_slides/20.png
+    - assets/tutorial_slides/21.png
+
 
 
 

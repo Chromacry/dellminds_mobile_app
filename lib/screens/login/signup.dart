@@ -71,7 +71,6 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // TextFormFields with pink underline
               Container(
                 margin: LoginStyles.titleContainerMargin,
                 child: InputTextBox(

@@ -17,11 +17,13 @@ class OnboardingPage3 extends StatelessWidget {
               Text(
                 'Welcome to the community!',
                 style: OnboardingStyles.headerText,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               Text(
                 'Now, we have to found out what activities you like through a simple quiz!',
                 style: OnboardingStyles.subheaderText,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
               // Next button

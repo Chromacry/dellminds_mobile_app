@@ -13,7 +13,7 @@ class LoginStyles {
   static const title = TextStyle(
     fontSize: 25,
     fontWeight: FontWeight.bold,
-    color: Colors.white,
+    color: Color.fromARGB(255, 75, 10, 32),
   );
   //* Submit Button
   static const Size buttonSize = Size(350, 50);

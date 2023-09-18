@@ -15,6 +15,7 @@ class OnboardingPage5 extends StatelessWidget {
               Text(
                 'Good Pick! Ready to begin?',
                 style: OnboardingStyles.headerText,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
               Container(

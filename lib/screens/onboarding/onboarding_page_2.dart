@@ -18,11 +18,13 @@ class OnboardingPage2 extends StatelessWidget {
               Text(
                 'But first...',
                 style: OnboardingStyles.headerText,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               Text(
                 'Let\'s do a quick sign up! Press the button below to get started.',
                 style: OnboardingStyles.subheaderText,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
               // Next button

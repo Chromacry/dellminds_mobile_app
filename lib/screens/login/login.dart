@@ -1,12 +1,49 @@
+import 'package:dellminds_mobile_app/screens/home/home.dart';
 import 'package:dellminds_mobile_app/screens/login/login_style.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_page_3.dart';
+import 'package:dellminds_mobile_app/widgets/input_textbox.dart';
 import 'package:flutter/material.dart';
-import 'package:dellminds_mobile_app/screens/login/forgotPassword.dart';
-import 'package:dellminds_mobile_app/screens/login/signup.dart';
+import 'package:dellminds_mobile_app/screens/login/login.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   static const String routeName = '/login';
+
+  String? emailValidator(value) {
+    if (value == null || value.isEmpty) {
+      return 'Email field is empty!';
+    }
+    // Regular expression to match an email address
+    final RegExp emailRegex =
+        RegExp(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$');
+
+    // Check if the value matches the regular expression
+    if (!emailRegex.hasMatch(value)) {
+      return 'Invalid email address!';
+    }
+    return null;
+  }
+
+  String? passwordValidator(value) {
+    if (value == null || value.isEmpty) {
+      return 'Password field is empty!';
+    }
+    return null;
+  }
+
+  String? nameValidator(value) {
+    if (value == null || value.isEmpty) {
+      return 'Full Name field is empty!';
+    }
+    return null;
+  }
+
+  String? phoneValidator(value) {
+    if (value == null || value.isEmpty) {
+      return 'Phone Number field is empty!';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,78 +51,50 @@ class LoginScreen extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: ListView(
+            shrinkWrap: true,
             children: [
-              Image.asset(
-                'assets/images/signup.png',
-                width: 150,
-                height: 150,
+              Center(
+                child: Image.asset(
+                  'assets/images/signup.png',
+                  width: LoginStyles.logoWidth,
+                  height: LoginStyles.logoHeight,
+                ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 20),
               Text(
-                'Create an account',
-                  style: LoginStyles.title,
-
+                'Login here',
+                style: LoginStyles.title,
               ),
               Text(
-                'Hi, kindly login to continue',
+                'Fill up all the boxes to login.',
                 style: TextStyle(
                   fontSize: 18,
                 ),
               ),
               SizedBox(height: 20),
+
               Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      style: TextStyle(
-                        color: Color(0xFFF84770),
-                      ),
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFF84770)),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFF84770)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      style: TextStyle(
-                        color: Color(0xFFF84770),
-                      ),
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFF84770)),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFF84770)),
-                        ),
-                      ),
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 10),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, ForgotPasswordScreen.routeName);
-                      },
-                      child: Text(
-                        'Forgot password',
-                        style: TextStyle(
-                          decoration: TextDecoration.none,
-                          color: const Color.fromARGB(255, 99, 99, 99),
-                        ),
-                      ),
-                    ),
-                  ],
+                margin: LoginStyles.titleContainerMargin,
+                child: InputTextBox(
+                  inputTextLabelValue: 'Email Address',
+                  onChanged: (text) {
+                    debugPrint(text);
+                  },
+                  obscureTextEnabled: true,
+                  validator: emailValidator,
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                margin: LoginStyles.titleContainerMargin,
+                child: InputTextBox(
+                  inputTextLabelValue: 'Password',
+                  onChanged: (text) {
+                    debugPrint(text);
+                  },
+                  obscureTextEnabled: true,
+                  validator: passwordValidator,
                 ),
               ),
               SizedBox(height: 10),
@@ -93,27 +102,31 @@ class LoginScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OnboardingPage3()),
-                    );
+                    context,
+                    MaterialPageRoute(builder: (context) => OnboardingPage3()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFF84770),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 40, vertical: 20), // Adjust button size here
+                  primary: LoginStyles.buttonColor,
+                  minimumSize: LoginStyles.buttonSize,
                 ),
-                child: Text('Confirmed'),
+                child: Text(
+                  'Login',
+                  style: LoginStyles.buttonText,
+                ),
               ),
               SizedBox(height: 20),
-              Text("Don't have an account?"),
+              Text('Don\'t have an account? Sign up here.'),
               SizedBox(height: 10),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, SignUpScreen.routeName);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
                 },
                 child: Text(
-                  'Create Account',
+                  'Sign Up',
                   style: TextStyle(
                     color: Colors.blue, // Blue text color
                   ),

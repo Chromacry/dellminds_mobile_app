@@ -200,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<List<Event>> _initializeProviders(BuildContext context) async {
-    final eventProvider = Provider.of<EventProvider>(context);
+    final theEventApi = Provider.of<EventApi>(context);
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
 
     final topCategory1 = userDummyProvider.topCategory1;
@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Fetch recommended events and return them
     final events =
-        await eventProvider.fetchRecommendedEvents(topCategory1, topCategory2);
+        await theEventApi.fetchRecommendedEvents(topCategory1, topCategory2);
 
     return events;
   }
@@ -221,20 +221,23 @@ class MapEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
+    final theEventApi = Provider.of<EventApi>(context);
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
     bool hasSignedUp = event?.joinedParticipants.contains(userId) ?? false;
     bool inProgress = event?.attendees.contains(userId) ?? false;
 
-    EventModal myEventModal = EventModal(event, hasSignedUp, inProgress);
-
     return InkWell(
       onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) => myEventModal,
+        Navigator.pushNamed(
+          context,
+          '/event-details',
+          arguments: {
+            'event': event,
+            'hasSignedUp': hasSignedUp,
+            'inProgress': inProgress,
+          },
         );
       },
       child: Material(

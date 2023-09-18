@@ -15,6 +15,7 @@ class OnboardingPage4 extends StatelessWidget {
               Text(
                 'Quiz Example',
                 style: OnboardingStyles.headerText,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
 

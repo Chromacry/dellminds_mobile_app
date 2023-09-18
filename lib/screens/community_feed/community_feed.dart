@@ -112,7 +112,7 @@ class CommunityPostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // You can remove these lines as they are not needed for community posts.
-    // final eventProvider = Provider.of<EventProvider>(context);
+    // final EventApi = Provider.of<EventApi>(context);
     // final userDummyProvider = Provider.of<UserDummyProvider>(context);
     // final userId = userDummyProvider.userId;
 

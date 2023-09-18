@@ -1,5 +1,9 @@
+import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
+import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
+import 'package:dellminds_mobile_app/screens/quiz/quiz_page_1.dart';
 import 'package:dellminds_mobile_app/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,15 +15,19 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final int currentIndex = 3;
+  final int currentIndex = 2;
 
   @override
   Widget build(BuildContext context) {
+    final userDummyProvider = Provider.of<UserDummyProvider>(context);
+    final topCategory1 = userDummyProvider.topCategory1;
+    final topCategory2 = userDummyProvider.topCategory2;
+
     // Dummy user data
     final userData = UserData(
       joinedEvents: 10,
       completedEvents: 5,
-      friends: 20,
+      posts: 20,
     );
 
     return Scaffold(
@@ -39,23 +47,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         .headline6
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
+                  // Display top categories
+                  if (topCategory1.isNotEmpty)
+                    Text(
+                      topCategory1, // Display top categories as a comma-separated string
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue, // Customize text color
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(width: 16.0),
-                      FloatingActionButton.extended(
-                        onPressed: () {},
-                        heroTag: 'editprofile',
-                        elevation: 0,
-                        backgroundColor: Colors.red,
-                        label: const Text("Edit Profile"),
-                        icon: const Icon(Icons.edit),
+                      Transform.scale(
+                        scale: 0.8,
+                        child: FloatingActionButton.extended(
+                          onPressed: () {},
+                          heroTag: 'editprofile',
+                          elevation: 0,
+                          backgroundColor: Colors.red,
+                          label: const Text("Edit Profile"),
+                          icon: const Icon(Icons.edit),
+                        ),
+                      ),
+                      const SizedBox(width: 5), // Add spacing between buttons
+                      Transform.scale(
+                        scale: 0.8,
+                        child: FloatingActionButton.extended(
+                          onPressed: () {
+                            // Call resetQuiz to reset questions and categories
+                            Provider.of<QuizProvider>(context, listen: false)
+                                .resetQuiz();
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => QuizPage1()),
+                            );
+                          },
+                          heroTag: 'editpreferences',
+                          elevation: 0,
+                          backgroundColor:
+                              Colors.blue, // Customize the button color
+                          label: const Text(
+                              "Edit Preferences"), // Customize the button text
+                          icon: const Icon(
+                              Icons.quiz), // Customize the button icon
+                        ),
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 16),
-                  _ProfileInfoRow(userData: userData), // Pass the dummy user data
+
+                  _ProfileInfoRow(
+                      userData: userData), // Pass the dummy user data
                 ],
               ),
             ),
@@ -77,25 +128,54 @@ class _ProfileInfoRow extends StatelessWidget {
     final List<ProfileInfoItem> _items = [
       ProfileInfoItem("Joined Events", userData.joinedEvents),
       ProfileInfoItem("Completed Events", userData.completedEvents),
-      ProfileInfoItem("Friends", userData.friends),
+      ProfileInfoItem("Posts", userData.posts),
     ];
 
-    return Container(
-      height: 80,
-      constraints: const BoxConstraints(maxWidth: 400),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _items
-            .map((item) => Expanded(
-                  child: Row(
-                    children: [
-                      if (_items.indexOf(item) != 0) const VerticalDivider(),
-                      Expanded(child: _singleItem(context, item)),
-                    ],
-                  ),
-                ))
-            .toList(),
-      ),
+    final double milestoneValue = 0.5; // Replace with your milestone progress
+
+    return Column(
+      children: [
+        Container(
+          height: 80,
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: _items
+                .map((item) => Expanded(
+                      child: Row(
+                        children: [
+                          if (_items.indexOf(item) != 0)
+                            const VerticalDivider(),
+                          Expanded(child: _singleItem(context, item)),
+                        ],
+                      ),
+                    ))
+                .toList(),
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("Milestone:"),
+            SizedBox(width: 8),
+            Text(
+              "Level 3",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        LinearProgressIndicator(
+          value: milestoneValue, // Replace with your actual milestone progress
+          color: Colors.green, // Customize the progress bar color
+          backgroundColor: Colors.grey, // Customize the background color
+        ),
+      ],
     );
   }
 
@@ -129,12 +209,12 @@ class ProfileInfoItem {
 class UserData {
   final int joinedEvents;
   final int completedEvents;
-  final int friends;
+  final int posts;
 
   UserData({
     required this.joinedEvents,
     required this.completedEvents,
-    required this.friends,
+    required this.posts,
   });
 }
 

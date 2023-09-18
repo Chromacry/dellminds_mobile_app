@@ -18,7 +18,7 @@ class _NavigationBarState extends State<Navigation_Bar> {
 
     return BottomNavigationBar(
       currentIndex: widget.currentIndex,
-      backgroundColor: DesignConstants.COLOR_THEMEPINK,
+      backgroundColor: Color.fromARGB(255, 250, 236, 240),
       selectedItemColor: selectedItemColor,
       unselectedItemColor: unselectedItemColor,
       onTap: (index) {
@@ -30,10 +30,8 @@ class _NavigationBarState extends State<Navigation_Bar> {
           case 1:
             Navigator.pushNamed(context, '/community');
             break;
+          
           case 2:
-            Navigator.pushNamed(context, '/chat');
-            break;
-          case 3:
             Navigator.pushNamed(context, '/profile');
             break;
         }
@@ -47,10 +45,7 @@ class _NavigationBarState extends State<Navigation_Bar> {
           icon: Icon(Icons.group),
           label: 'Community',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.chat),
-          label: 'Chat',
-        ),
+       
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',

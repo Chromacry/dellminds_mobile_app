@@ -21,8 +21,8 @@ class _EventsAllScreenState extends State<EventsAllScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
-    final filteredEvents = eventProvider.events.where((event) {
+    final theEventApi = Provider.of<EventApi>(context);
+    final filteredEvents = theEventApi.events.where((event) {
       final eventCategory = event.category;
       final eventTitle = event.title.toLowerCase();
       final searchQuery = searchText.toLowerCase();
@@ -170,20 +170,24 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
+    final theEventApi = Provider.of<EventApi>(context);
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
     bool hasSignedUp = event.joinedParticipants.contains(userId);
     bool inProgress = event.attendees.contains(userId);
 
-    EventModal myEventModal = EventModal(event, hasSignedUp, inProgress);
 
     return InkWell(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) => myEventModal,
+     onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/event-details',
+          arguments: {
+            'event': event,
+            'hasSignedUp': hasSignedUp,
+            'inProgress': inProgress,
+          },
         );
       },
       child: Material(
