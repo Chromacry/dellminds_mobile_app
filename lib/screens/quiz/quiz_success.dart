@@ -1,5 +1,6 @@
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'package:dellminds_mobile_app/screens/home/home.dart';
+import 'package:dellminds_mobile_app/screens/tutorial/tutorial_start.dart';
 import 'package:flutter/material.dart';
 import 'package:dellminds_mobile_app/providers/quiz_provider.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/onboarding_style.dart';
@@ -68,8 +69,11 @@ class _QuizSuccessPageState extends State<QuizSuccessPage> {
               height: OnboardingStyles.nextButtonHeight,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      HomeScreen.routeName, (_) => false);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TutorialStartPage()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: OnboardingStyles.nextButtonColor,

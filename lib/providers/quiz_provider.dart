@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 class QuizProvider extends ChangeNotifier {
   List<QuizQuestion> unusedQuestions = [];
-  String topCategory1 = 'None'; // Initialize with 'Non' as the default
-  String topCategory2 = 'None'; // Initialize with 'Non' as the default
+  String topCategory1 = 'None'; 
+  String topCategory2 = 'None'; 
 
   QuizProvider() {
     if (quizQuestions.isNotEmpty) {
@@ -25,6 +25,21 @@ class QuizProvider extends ChangeNotifier {
   //* Updates scores
   void updateScore(String category) {
     activityScores[category] = (activityScores[category] ?? 0) + 1;
+    notifyListeners();
+  }
+
+  void resetQuiz() {
+    if (quizQuestions.isNotEmpty) {
+      unusedQuestions = List.from(quizQuestions)..shuffle();
+    }
+    topCategory1 = 'None';
+    topCategory2 = 'None';
+    activityScores = {
+      'Football': 0,
+      'Basketball': 0,
+      'Painting': 0,
+      'Music': 0,
+    };
     notifyListeners();
   }
 
@@ -132,7 +147,6 @@ List<QuizQuestion> quizQuestions = [
   QuizQuestion('Painting', 'Basketball'),
   QuizQuestion('Photography', 'Volleyball'),
   QuizQuestion('Nature Walks', 'Music'),
-
 
   // more questions
 ];

@@ -14,6 +14,7 @@ import 'package:dellminds_mobile_app/screens/login/signup.dart';
 import 'package:dellminds_mobile_app/screens/login/verificationScreen.dart';
 import 'package:dellminds_mobile_app/screens/onboarding/welcome.dart';
 import 'package:dellminds_mobile_app/screens/profile/profile.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,11 +43,11 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<UserDummyProvider>(
           create: (context) => UserDummyProvider(),
         ),
-        ChangeNotifierProvider<EventProvider>(
-          create: (context) => EventProvider(),
+        ChangeNotifierProvider<EventApi>(
+          create: (context) => EventApi(),
         ),
-        ChangeNotifierProvider<EventProvider>(
-          create: (context) => EventProvider(),
+        ChangeNotifierProvider<EventApi>(
+          create: (context) => EventApi(),
         ),
       ],
       child: MaterialApp(
@@ -68,11 +69,11 @@ class _MyAppState extends State<MyApp> {
           ),
           home: WelcomePage(),
           routes: {
-            LoginScreen.routeName: (_) {
-              return LoginScreen();
-            },
             SignUpScreen.routeName: (_) {
               return SignUpScreen();
+            },
+            LoginScreen.routeName: (_) {
+              return LoginScreen();
             },
             ForgotPasswordScreen.routeName: (_) {
               return ForgotPasswordScreen();
@@ -89,6 +90,27 @@ class _MyAppState extends State<MyApp> {
             EventsAllScreen.routeName: (_) {
               return EventsAllScreen();
             },
+            FullPageEventDetails.routeName: (BuildContext context) {
+              // Retrieve the arguments passed when navigating to this route
+              final args = ModalRoute.of(context)?.settings.arguments;
+
+              if (args is Map<String, dynamic>) {
+                // Extract the data from the arguments map
+                final event = args['event'] as Event?;
+                final hasSignedUp = args['hasSignedUp'] as bool;
+                final inProgress = args['inProgress'] as bool;
+
+                return FullPageEventDetails(
+                  event: event,
+                  hasSignedUp: hasSignedUp,
+                  inProgress: inProgress,
+                );
+              } else {
+                // Handle the case when arguments are not provided or are of the wrong type
+                // You can return a default or error state here
+                return YourErrorWidget();
+              }
+            },
             ProfileScreen.routeName: (_) {
               return ProfileScreen();
             },
@@ -98,8 +120,55 @@ class _MyAppState extends State<MyApp> {
             CreatePostScreen.routeName: (_) {
               return CreatePostScreen();
             },
-            
           }),
+    );
+  }
+}
+
+class YourErrorWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Error'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 100.0,
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              'An error occurred.',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Text(
+              'Please try again later.',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.grey,
+              ),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(); // Navigate back to the previous screen
+              },
+              child: Text('Go Back'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

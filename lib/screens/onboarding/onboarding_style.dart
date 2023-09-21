@@ -39,8 +39,8 @@ class OnboardingStyles{
    //* Next Button with Circular Arrow
   static const nextButtonColor = DesignConstants.COLOR_THEMEPINK;
   static const nextButtonTextColor = Colors.white;
-  static const nextButtonHeight = 80.0;
-  static const nextButtonWidth = 180.0;
+  static const nextButtonHeight = 60.0;
+  static const nextButtonWidth = 160.0;
   static const nextButtonArrowColor = Colors.white;
   static const nextButtonArrowSize = 30.0;
 

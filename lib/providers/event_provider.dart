@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:dellminds_mobile_app/constants/design_constants.dart';
 import 'package:dellminds_mobile_app/providers/user_dummy_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 //* Event model
 class Event {
@@ -31,11 +34,9 @@ class Event {
     required this.activity,
     required this.category,
   });
-
-  
 }
 
-class EventProvider extends ChangeNotifier {
+class EventApi extends ChangeNotifier {
   List<Event> _events = [
     Event(
       id: 1,
@@ -167,10 +168,23 @@ class EventProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  String getYoutubeLinkForActivity(String activity) {
+    switch (activity) {
+      case 'Football':
+        return 'https://youtu.be/qknP-E-vPQ4?si=JklBNToN-gzsVU5k';
+      case 'Basketball':
+        return 'https://youtu.be/NdmvkBQa7cY?si=k6mPN_wi3zcB0lQuo';
+      case 'Painting':
+        return 'https://youtu.be/LtpvlOlUxi4?si=IFiLywTLChsVbLTa';
+      case 'Music':
+        return 'https://youtu.be/XKfTTHqbk-4?si=GQ91_vv3uETYg8IU';
+      // Add more cases for other categories
+      default:
+        return 'https://www.youtube.com'; // Default link for unknown categories
+    }
+  }
 }
-
-
-
 
 class EventModal extends StatelessWidget {
   final Event? event;
@@ -185,7 +199,7 @@ class EventModal extends StatelessWidget {
       return Container(); // Return an empty container if event is null
     }
 
-    final eventProvider = Provider.of<EventProvider>(context);
+    final theEventApi = Provider.of<EventApi>(context);
     final userDummyProvider = Provider.of<UserDummyProvider>(context);
     final userId = userDummyProvider.userId;
 
@@ -316,7 +330,8 @@ class EventModal extends StatelessWidget {
                             ElevatedButton(
                               onPressed: () async {
                                 // Leave Event action
-                                eventProvider.leaveEvent(event!.id, userId!, context);
+                                theEventApi.leaveEvent(
+                                    event!.id, userId!, context);
 
                                 await Future.delayed(
                                     Duration(milliseconds: 300));
@@ -347,7 +362,8 @@ class EventModal extends StatelessWidget {
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                eventProvider.checkInEvent(event!.id, userId!, context);
+                                theEventApi.checkInEvent(
+                                    event!.id, userId!, context);
                                 await Future.delayed(
                                     Duration(milliseconds: 300));
 
@@ -379,8 +395,7 @@ class EventModal extends StatelessWidget {
                         )
                       : ElevatedButton(
                           onPressed: () async {
-                            eventProvider.joinEvent(
-                                event!.id, userId!, context);
+                            theEventApi.joinEvent(event!.id, userId!, context);
 
                             await Future.delayed(Duration(milliseconds: 300));
 
